@@ -1,21 +1,17 @@
 /*****************************************************************//**
- * \file   main.cpp
+ * \file   Fib.hpp
  * \brief  
  * 
  * \author Simon
  * \date   March 2026
  *********************************************************************/
+#ifndef FIB_HPP
+#define FIB_HPP
 
-#include <iostream>
 
-#include "Fib.hpp"
+void BenchmarkFib(size_t max_fib_n);
+void PrintFibSequenceMultiThreaded(size_t max_fib_n);
 
-using namespace std;
 
-int main(void){
-	
-	//PrintFibSequenceMultiThreaded(40);
 
-	BenchmarkFib(43);
-
-}
+#endif // !FIB_HPP
