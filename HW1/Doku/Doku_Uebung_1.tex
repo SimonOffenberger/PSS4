@@ -1,0 +1,86 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage{pdfpages}
+\usepackage[cp1252]{inputenc}
+\usepackage{lipsum}
+\usepackage{listings}
+\usepackage{pdflscape}
+\usepackage{graphicx}
+\usepackage[margin=1.5cm]{geometry} % Verkleinert die Ränder
+\definecolor{okgreen}{rgb}{0.0, 0.5, 0.0}
+
+\lstdefinestyle{cppstyle}{
+  language=C++,
+  basicstyle=\ttfamily\tiny,
+  keywordstyle=\color{blue},
+  commentstyle=\textcolor{okgreen},
+  stringstyle=\color{red},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  stepnumber=1,
+  breaklines=true,
+  frame=single
+}
+
+\definecolor{failred}{rgb}{0.7, 0.0, 0.0}
+
+\lstdefinelanguage{TestOutput}{
+    morekeywords={},
+    morecomment=[l]{//},
+    morestring=[b]",
+    sensitive=false,
+}
+
+\lstdefinestyle{teststyle}{
+    language=TestOutput,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{black},
+    commentstyle=\color{gray},
+    stringstyle=\color{black},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+    literate={OK}{{\textcolor{okgreen}{OK}}}2
+             {Fail}{{\textcolor{failred}{Fail}}}4,
+}
+
+\begin{document}
+\includepdf[pages=1-3] {Angabe_Uebung8.pdf}
+\newpage
+\section{Beispiel 1 Shift Template}
+\subsection{Lösungsidee}
+Die vorliegende Funktion bietet eine generische Lösung zum Linksschieben von Elementen in beliebigen Containern mittels Iteratoren. Dabei werden die ersten count Elemente entfernt, die restlichen nach vorne verschoben und die freigewordenen Positionen am Ende mit einem festen Wert aufgefüllt. Durch die Verwendung von Templates ist die Funktion flexibel und für verschiedene Containertypen wie std::vector oder std::list einsetzbar, sofern deren Iteratoren grundlegende Operationen wie Inkrementieren und Dereferenzieren unterstützen. Die Implementierung erfolgt in-place, wodurch keine zusätzlichen Speicherressourcen benötigt werden und die Effizienz gewahrt bleibt.
+\subsection{ShiftTemplate.hpp}
+\lstinputlisting[style=cppstyle]{Uebung8/Uebung8/ShiftTemplate.hpp}
+\newpage
+\section{Beispiel 2 Count Pairs}
+\subsection{Lösungsidee}
+Die Funktion \texttt{CountPairs} bietet eine generische Möglichkeit, echte Paare in einem Container zu zählen – also exakt zwei unmittelbar aufeinanderfolgende, gleiche Elemente. Durch die Nutzung von \texttt{std::adjacent\_find} wird effizient nach solchen Paaren gesucht, wobei längere Sequenzen gleicher Werte bewusst ausgeschlossen werden. Die Funktion arbeitet iteratorbasiert und ist dadurch für verschiedenste Containertypen flexibel einsetzbar.
+\subsection{CountPairs.hpp}
+\lstinputlisting[style=cppstyle]{Uebung8/Uebung8/CountPairs.hpp}
+\newpage
+\section{Beispiel 3 Set Operations}
+\subsection{Lösungsidee}
+Die bereitgestellten Template-Funktionen \texttt{Union}, \texttt{Intersection} und \texttt{Difference} ermöglichen grundlegende Mengenoperationen auf beliebigen Containern mittels Iteratoren. Ziel ist es, die Vereinigungs-, Schnitt- und Differenzmenge zweier Container generisch zu berechnen und das Ergebnis über einen Zieliterator (\texttt{begin3}) auszugeben. Dabei wird für jede Operation sichergestellt, dass doppelte Elemente vermieden werden, indem diese mithilfe von \texttt{std::find} überprüft werden. Die Funktionen arbeiten vollständig iteratorbasiert und lassen sich somit flexibel für verschiedene Containertypen wie \texttt{std::vector}, \texttt{std::list} oder \texttt{std::deque} einsetzen. 
+\subsection{SetOperations.hpp}
+\lstinputlisting[style=cppstyle]{Uebung8/Uebung8/SetOperations.hpp}
+\newpage
+\begin{landscape}
+\subsection{Testtreiber main.cpp}
+\lstinputlisting[style=cppstyle]{Uebung8/Uebung8/main.cpp}
+\end{landscape}
+\newpage
+\begin{landscape}
+\subsection{Testfunktionen Test.hpp}
+\lstinputlisting[style=cppstyle]{Uebung8/Uebung8/Test.hpp}
+\newpage
+\subsection{Tests}
+Für die Tests der Templates wurde darauf geachtet, dass diese auf verschieden Container und Datentypen angewendet wurde.
+Besonders der Test von verschiedenen Iteratortypen ist hier wichtig. (Forward Iterator, Random Access Iterator usw.).
+Die Testfälle sind in der Ausgabe genauer beschrieben.
+\subsubsection{Testoutput:}
+\lstinputlisting[style=teststyle]{Uebung8/Uebung8/TestResult.txt}
+\end{landscape}
+\end{document}
