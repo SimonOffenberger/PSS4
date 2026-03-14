@@ -1,7 +1,10 @@
 ////////////////////////////////////////////////////////////////////////////
-// class Matrix encapsulates a single matrix
-// Implementation
-// Michael Bogner / PSS4 / HSD
+// @file Matrix.cpp
+// @brief Implementation of the Matrix class.
+//        Provides initialization, multi-threaded multiplication (one thread per cell),
+//        comparison and printing helpers.
+// @author Michael Bogner
+// @date   March 2026
 ////////////////////////////////////////////////////////////////////////////
 
 #include <cassert>
@@ -9,6 +12,7 @@
 #include <algorithm>
 #include "Matrix.h"
 #include "windows.h"
+#include "Hlp.h"
 
 using namespace std;
 
@@ -22,56 +26,7 @@ void Matrix::Init(double const & val) {
 }
 
 
-void Matrix::AttachTemperature() {
-
-    // 10x10 Matrix
-    //assert(n == 10);
-    //mMatrix[0][n-1] = 50;
-    //mMatrix[1][n-1] = 400;
-    //mMatrix[2][n-1] = 700;
-    //mMatrix[3][n-1] = 900;
-    //mMatrix[4][n-1] = 1000;
-    //mMatrix[5][n-1] = 1000;
-    //mMatrix[6][n-1] = 900;
-    //mMatrix[7][n-1] = 700;
-    //mMatrix[8][n-1] = 400;
-    //mMatrix[9][n-1] = 50;
-
-    // 32x32 Matrix
-    assert(n == 32);
-    mMatrix[0][n-1] =   20;
-    mMatrix[1][n-1] =   50;
-    mMatrix[2][n-1] =  100;
-    mMatrix[3][n-1] =  150;
-    mMatrix[4][n-1] =  200;
-    mMatrix[5][n-1] =  250;
-    mMatrix[6][n-1] =  300;
-    mMatrix[7][n-1] =  350;
-    mMatrix[8][n-1] =  400;
-    mMatrix[9][n-1] =  500;
-    mMatrix[10][n-1] = 600;
-    mMatrix[11][n-1] = 700;
-    mMatrix[12][n-1] = 800;
-    mMatrix[13][n-1] = 900;
-    mMatrix[14][n-1] = 950;
-    mMatrix[15][n-1] = 1000;
-
-    // symmetric on other side
-    for (int i = 16; i < n; i++) {
-        mMatrix[i][n-1] = mMatrix[31-i][n-1];
-    }
-
-     // 250x250 Matrix
-    //assert(n == 250);
-    //mMatrix[ 98][n-1] = 1000;
-    //mMatrix[ 99][n-1] = 1000;
-    //mMatrix[100][n-1] = 1000;
-    //mMatrix[101][n-1] = 1000;
-    //mMatrix[102][n-1] = 1000;
-
-}
-
-
+// structure to pass the parameters for the cell multiplication task to the worker thread
 typedef struct {
 	const Matrix* pMatrixA;
     const Matrix* pMatrixB;
@@ -80,14 +35,20 @@ typedef struct {
 	size_t col;
 }TCellTask ;
 
-
+/**
+ * \brief Worker Function that calculates the result of a Matrix Muliplication
+ * \brief for one Cell of the result Matrix.
+ * 
+ * \param ptask Pointer to a TCellTask structure that contains the parameters for the cell multiplication.
+ * \return 
+ */
 DWORD WINAPI Matrix_Cell_Mul(LPVOID ptask) {
 
     TCellTask* task = static_cast<TCellTask*>(ptask);
 
     double sum = 0;
-    for (size_t k = 0; k < task->pMatrixA->n; ++k) {
-        sum += task->pMatrixA->GetMatrix()[task->row][k] * task->pMatrixB->GetMatrix()[k][task->col];
+    for (size_t i = 0; i < task->pMatrixA->n; ++i) {
+        sum += task->pMatrixA->GetMatrix()[task->row][i] * task->pMatrixB->GetMatrix()[i][task->col];
     }
 
     task->pResultMatrix->GetMatrix()[task->row][task->col] = sum;
@@ -98,49 +59,85 @@ DWORD WINAPI Matrix_Cell_Mul(LPVOID ptask) {
 
 Matrix Matrix::operator*(Matrix const & other) const
 {
-    Matrix result;               // Beispiel
+	// result matrix
+    Matrix result;    
     const size_t num_threads = n * n;
-    size_t idx = 0;
+    
+	// vectors to store the tasks, handles and thread IDs of the worker threads
     std::vector<TCellTask> tasks;
     std::vector<HANDLE> worker_threads;
-    worker_threads.reserve(num_threads);
-	tasks.reserve(num_threads);
-
     std::vector<DWORD> thread_ids(num_threads, 0);
+	
+	// reserve space in the vectors to avoid reallocations
+    tasks.reserve(num_threads);
+    worker_threads.reserve(num_threads);
 
+    size_t idx = 0;
+
+	// Start a worker thread for each cell in the result matrix
     for (size_t row = 0; row < n; ++row) {
         for (size_t col = 0; col < n; ++col) {
 
+			// Fill the task structure with the parameters for the cell multiplication
 			TCellTask task{ this, &other, &result, row, col };
 
+			// Store the task in the vector and start a worker thread to execute the cell multiplication
             tasks.emplace_back(move(task));
 
-            worker_threads.emplace_back(CreateThread(
+            HANDLE Worker = CreateThread(
                 0,
                 0, // default stack size (1MB), value determines the number of bytes
                 Matrix_Cell_Mul,
                 &tasks.back(),
                 0,
                 &thread_ids.at(idx)
-            ));
+            );
+
+			// check if the thread was created successfully
+            if(Worker == nullptr) {
+                throw runtime_error(ERROR_CREATING_THREAD + Hlp::ErrMsg(GetLastError()));
+			}
+
+			// Store the handle of the worker thread in the vector
+            worker_threads.emplace_back(Worker);
 
             ++idx;
         }
     }
 
+	// Wait for all worker threads to finish and close their handles
     for_each(worker_threads.cbegin(), worker_threads.cend(), [](const HANDLE& hThread) {
         WaitForSingleObject(hThread, INFINITE);
-		});
-
-    for_each(worker_threads.cbegin(), worker_threads.cend(), [](const HANDLE& hThread) {
         CloseHandle(hThread);
     });
 
+	// Return the result matrix (RVO / move)
     return move(result);
 }
 
+bool Matrix::operator==(Matrix const& other) const
+{
+
+    for(int i = 0; i < n; i++) {
+        for(int j = 0; j < n; j++) {
+            if (mMatrix[i][j] != other.mMatrix[i][j]) {
+                return false;
+            }
+        }
+	}
+
+    return true;
+}
+
 // print the matrix
-void Matrix::Print(std::ostream & ost) {
+void Matrix::Print(std::ostream & ost) const {
+
+    if(!ost.good()) {
+        throw std::invalid_argument(ERROR_BAD_OSTREAM);
+	}
+
+    ost << std::endl;
+
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
             ost << static_cast<int>(mMatrix[i][j]) << "  ";
@@ -150,8 +147,8 @@ void Matrix::Print(std::ostream & ost) {
 }
 
 
-// print the matrix as comma seperated values file (readable by MS Excel)
-void Matrix::PrintAsCSVFile() {
+// print the matrix as comma separated values file (readable by MS Excel)
+void Matrix::PrintAsCSVFile() const {
     std::ofstream out("MatrixTempResult.csv");
     assert(out.good()); // check if file could be opened/created
 
@@ -164,3 +161,13 @@ void Matrix::PrintAsCSVFile() {
     out.close();
 }
 
+std::ostream& operator<<(std::ostream& ost, const Matrix& M)
+{
+    if (!ost.good()) {
+        throw std::invalid_argument(Matrix::ERROR_BAD_OSTREAM);
+    }
+
+    M.Print(ost);
+
+    return ost;
+}

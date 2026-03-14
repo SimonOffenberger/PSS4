@@ -1,0 +1,241 @@
+Detected 20 logical processors.
+Created thread with ID: 0
+WorkerThread Created thread with ID: 0
+9072: Result of fib(0) = 0
+WorkerThread 9072: Result of fib(1) = 1
+WorkerThread 9072: Result of fib(2) = 1
+WorkerThread 9072: Result of fib(3) = 2
+WorkerThread 9072: Result of fib(4) = 3
+WorkerThread 9072: Result of fib(5) = 5
+WorkerThread 9072: Result of fib(6) = 8
+WorkerThread 9072: Result of fib(7) = 13
+WorkerThread 9072: Result of fib(8) = 21
+WorkerThread Created thread with ID: 0
+9072Created thread with ID: 0
+: Result of fib(9) = WorkerThread 32536: Result of fib(0) = 0
+WorkerThread 32536: Result of fib(1) = 1
+WorkerThread 32536: Result of fib(2) = 1
+WorkerThread 32536: Result of fib(3) = 2
+WorkerThread 32536: Result of fib(WorkerThread 41632: Result of fib(0) = 34
+4) = 3
+WorkerThread 18156: Result of fib(0) = 0
+WorkerThread 18156: Result of fib(1) = 1
+WorkerThread 18156: Result of fib(2) = 1
+WorkerThread 18156: Result of fib(3) = 2
+Created thread with ID: 0
+0Created thread with ID:
+WorkerThread 41632: Result of fib(1) = 1
+WorkerThread 41632: Result of fib(2) = 1
+WorkerThread 41632: Result of fib(3) = 2
+WorkerThread 41632: Result of fib(WorkerThread 32536: Result of fib(5) = 54) = 30
+WorkerThread 16204: Result of fib(WorkerThread 12488: Result of fib(0) = 0
+
+WorkerThread 41632: Result of fib(5) = 5
+WorkerThread 41632: Result of fib(6) = 8
+WorkerThread 41632: Result of fib(7) = 13
+WorkerThread 41632: Result of fib(8) = 21
+WorkerThread 41632: Result of fib(WorkerThread 12488: Result of fib(1) = 1
+WorkerThread 222489) = 34
+WorkerThread 416320) = 0: Result of fib(0) =
+WorkerThread 32536: Result of fib(6) =
+WorkerThread 0
+WorkerThread 22248: Result of fib(10) = 55
+Created thread with ID: 0
+WorkerThread 12488WorkerThread 32236: Result of fib(0) = 0
+WorkerThread 32236: Result of fib(1Created thread with ID: 0
+: Result of fib(2WorkerThread 43164: Result of fib(0) = 8
+WorkerThread 32536) = 1
+: Result of fib(1) = 10
+WorkerThread 43164: Result of fib(7) = 13
+
+WorkerThread 22248: Result of fib(2) = 1
+WorkerThread 22248Created thread with ID: 0
+WorkerThread 9072WorkerThread WorkerThread 32536: Result of fib(8) = 21
+) = 1
+WorkerThread 32236: Result of fib(2) = 1
+WorkerThread 32236: Result of fib(3) = 2
+WorkerThread 32236: Result of fib(4) = 3
+WorkerThread 32236: Result of fib(5) = 5
+WorkerThread 32236: Result of fib(6) = 8
+WorkerThread 32236: Result of fib(7) = 13
+WorkerThread 32236: Result of fib(8) = 21
+WorkerThread 12488: Result of fib(3) = 2
+WorkerThread 12488: Result of fib(4) = 3
+47568: Result of fib(0) = 0
+WorkerThread 47568: Result of fib(1) = 1
+WorkerThread 47568: Result of fib(2) = 1
+WorkerThread : Result of fib(1) = 1: Result of fib(10) = 55
+47568: Result of fib(3) = 2
+WorkerThread 47568: Result of fib(4) = 3
+WorkerThread 47568: Result of fib(3) = 2
+WorkerThread 22248: Result of fib(4) = 3
+WorkerThread Created thread with ID: 0
+WorkerThread Created thread with ID: 0
+WorkerThread 32536: Result of fib(9WorkerThread 11156: Result of fib(0) = 0
+WorkerThread 11156: Result of fib(1) = 1
+WorkerThread 11156: Result of fib(2) = 112488: Result of fib(5) = 5: Result of fib(5) = 5
+WorkerThread 47568: Result of fib(6) = 8
+WorkerThread 47568: Result of fib(7) = 13WorkerThread 137832: Result of fib(0) = 0
+WorkerThread 137832: Result of fib(1) = 1
+Created thread with ID: 0
+) = Created thread with ID: 0
+WorkerThread 5516: Result of fib(0) = 0
+WorkerThread 5516: Result of fib(1) = WorkerThread 1404: Result of fib(0) = 0
+WorkerThread 11156: Result of fib(3) = 2
+WorkerThread 11156: Result of fib(434
+WorkerThread 32536: Result of fib(10) = 1
+WorkerThread 5516: Result of fib(2) = 1
+WorkerThread 5516Created thread with ID: 0
+22248Created thread with ID: 0
+16204: Result of fib(1) = WorkerThread 164868: Result of fib(0) = 0
+WorkerThread 164868: Result of fib(1) = 1
+1
+WorkerThread 16204: Result of fib(2) = : Result of fib(5) = 5
+WorkerThread 22248: Result of fib(6) =
+WorkerThread 43164: Result of fib(
+WorkerThread 47568: Result of fib(8) = 21
+WorkerThread 47568: Result of fib(9) = 34
+WorkerThread 47568: Result of fib(10) = 55
+Created thread with ID: ) = 3
+WorkerThread 11156: Result of fib(5) = 5
+WorkerThread 11156: Result of fib(6) = 8
+WorkerThread 11156: Result of fib(7) = 13
+WorkerThread 111560
+WorkerThread 8Created thread with ID: 0
+551
+WorkerThread 16204: Result of fib(3) =
+WorkerThread 1404: Result of fib(1) = 1
+Created thread with ID: 0
+WorkerThread 39368: Result of fib(0) = 0
+WorkerThread 39368: Result of fib(1) =
+164868: Result of fib(2) = 1
+2) = 1
+WorkerThread 431642
+WorkerThread 16204: Result of fib(4) = 3
+: Result of fib(8) = 21
+WorkerThread 164100: Result of fib(0) = 0
+WorkerThread 164100: Result of fib(1) = WorkerThread 16204: Result of fib(5Created thread with ID: 0
+
+WorkerThread 22248: Result of fib(7) = 13
+WorkerThread 22248: Result of fib(8) = 21
+WorkerThread 22248: Result of fib(9) = : Result of fib(3) = 2
+WorkerThread 43164: Result of fib(4) = 3
+WorkerThread : Result of fib(3) = 2
+WorkerThread 1404: Result of fib(2) = 1
+WorkerThread 1404: Result of fib(3) = 2
+WorkerThread 1404: Result of fib(
+WorkerThread 12488: Result of fib(6) = 8
+WorkerThread 12488: Result of fib(7) = 13
+WorkerThread 12488: Result of fib(8) = 21
+WorkerThread 12488: Result of fib(9) = 34
+) = 5
+WorkerThread 16204: Result of fib(6) = 8
+WorkerThread 16204: Result of fib(7) = 13
+WorkerThread 16204: Result of fib(8) = 21
+WorkerThread WorkerThread 32236: Result of fib(9) = 34
+WorkerThread 322361
+WorkerThread 17952: Result of fib(0) = 0
+WorkerThread 17952: Result of fib(WorkerThread 137832: Result of fib(2) = 1
+WorkerThread 137832: Result of fib(WorkerThread 12488: Result of fib(10) = 55
+1) = 1Created thread with ID: 17952
+WorkerThread 393681
+WorkerThread 164100: Result of fib(2WorkerThread 164868: Result of fib(3) = 2
+WorkerThread 11156: Result of fib(9) = WorkerThread 63236: Result of fib(0) = 0
+WorkerThread : Result of fib(10) = 55
+34
+WorkerThread 11156: Result of fib(10) = 55
+63236: Result of fib(1) = 1
+WorkerThread 16204: Result of fib(9) = 34
+WorkerThread 16204: Result of fib(10) = 55
+) = 1
+WorkerThread 164100: Result of fib(3) = 2
+WorkerThread 16410040764: Result of fib(WorkerThread 1815643164: Result of fib(5) = 5
+3) = 2
+WorkerThread 137832: Result of fib(4) = 3
+WorkerThread 1378320) = 0
+WorkerThread 40764: Result of fib(1) = 1
+WorkerThread 40764: Result of fib(2) = 1
+WorkerThread 40764: Result of fib(3) = 2
+4) = 3
+WorkerThread 1404WorkerThread 5516: Result of fib(4) = 3
+WorkerThread 5516: Result of fib(5) = 5
+WorkerThread 5516: Result of fib(6WorkerThread 40764: Result of fib(4) = : Result of fib(4) = 3
+WorkerThread 18156: Result of fib(5) =
+WorkerThread 17952: Result of fib(2: Result of fib(2) = 1
+34
+WorkerThread ) = 8
+WorkerThread 5516: Result of fib(7) = 13
+WorkerThread 63236: Result of fib(2) = 1
+WorkerThread 63236: Result of fib(3) = 2
+WorkerThread WorkerThread 43164: Result of fib(6) = 8
+WorkerThread 43164: Result of fib(7) = 13
+WorkerThread 43164: Result of fib(: Result of fib(5) = 5
+WorkerThread 137832: Result of fib(6) = 8
+WorkerThread 137832: Result of fib(7) = 13
+WorkerThread 137832: Result of fib(8) = 21
+WorkerThread 137832: Result of fib(632363
+WorkerThread 40764: Result of fib(5) = 5WorkerThread 164868: Result of fib(4) = 3
+8) = 21
+WorkerThread 43164: Result of fib(9) = : Result of fib(5) = : Result of fib(4) = 3
+WorkerThread 164100: Result of fib(5) = 5
+WorkerThread 164100: Result of fib(6) = 8
+WorkerThread 164100: Result of fib(7) = 13
+WorkerThread
+WorkerThread 40764: Result of fib(6) = ) = 1
+WorkerThread 17952: Result of fib(3) = 2
+348
+WorkerThread 40764: Result of fib(7) = 13
+WorkerThread : Result of fib(4) = 3
+WorkerThread 63236: Result of fib(5) = 5
+WorkerThread 63236: Result of fib(6) = 8
+WorkerThread 6323640764: Result of fib(8) = 22248: Result of fib(10) = WorkerThread 5516: Result of fib(8) = 21
+WorkerThread 551621
+WorkerThread 40764: Result of fib(9) = 34
+WorkerThread 40764: Result of fib(10) = 55
+: Result of fib(7) = 5
+WorkerThread 1404: Result of fib(6) = 8
+WorkerThread 55
+13
+
+WorkerThread 43164: Result of fib(10) = 55
+WorkerThread 63236: Result of fib(8) = 164100: Result of fib(8) = WorkerThread 39368: Result of fib(: Result of fib(9) = 34
+WorkerThread 551621
+5
+WorkerThread 164868: Result of fib(5) = 5
+WorkerThread 164868: Result of fib(6) = 8
+3) = 2
+WorkerThread 39368: Result of fib(4) = 3
+WorkerThread 39368: Result of fib(5) = 5
+9) = 21
+WorkerThread 63236: Result of fib(9) = 34
+34
+WorkerThread 1404: Result of fib(7) = 13
+WorkerThread 1404: Result of fib(8) = 21
+WorkerThread 1404: Result of fib(9) = 34
+WorkerThread 1404: Result of fib(10) = 55
+WorkerThread WorkerThread 164868: Result of fib(7) = 13
+WorkerThread 164868: Result of fib(8) = 21
+WorkerThread 164868: Result of fib(9) = 34
+WorkerThread 164868: Result of fib(10) = 55
+WorkerThread 39368: Result of fib(6) = 8
+WorkerThread 39368: Result of fib(7) = 13
+WorkerThread 39368: Result of fib(8) = 21
+WorkerThread 39368: Result of fib(9) = 34
+137832: Result of fib(10) = 18156: Result of fib(6) = 8
+WorkerThread 55
+WorkerThread 17952: Result of fib(4) = 3
+WorkerThread 1795218156: Result of fib(7) = 13
+WorkerThread 18156: Result of fib(8) = 21
+WorkerThread 18156: Result of fib(9) = 34
+WorkerThread 18156: Result of fib(10) = 55
+WorkerThread WorkerThread 164100: Result of fib(9) = 34
+: Result of fib(10) = 55
+39368: Result of fib(5) = 5
+WorkerThread 17952: Result of fib(6) = 8
+WorkerThread 17952: Result of fib(7) = 13
+WorkerThread 17952: Result of fib(8) = 21
+WorkerThread 17952: Result of fib(9) = 34
+WorkerThread 17952: Result of fib(10) = 55
+WorkerThread 63236: Result of fib(10) = 55
+WorkerThread 164100: Result of fib(10) = 55
+: Result of fib(10) = 55

@@ -1,0 +1,48 @@
+Calculating fib(43) in a single-threaded version...
+Single Threaded: Iteration 0 of 20 fib(43) = 433494437
+Single Threaded: Iteration 1 of 20 fib(43) = 433494437
+Single Threaded: Iteration 2 of 20 fib(43) = 433494437
+Single Threaded: Iteration 3 of 20 fib(43) = 433494437
+Single Threaded: Iteration 4 of 20 fib(43) = 433494437
+Single Threaded: Iteration 5 of 20 fib(43) = 433494437
+Single Threaded: Iteration 6 of 20 fib(43) = 433494437
+Single Threaded: Iteration 7 of 20 fib(43) = 433494437
+Single Threaded: Iteration 8 of 20 fib(43) = 433494437
+Single Threaded: Iteration 9 of 20 fib(43) = 433494437
+Single Threaded: Iteration 10 of 20 fib(43) = 433494437
+Single Threaded: Iteration 11 of 20 fib(43) = 433494437
+Single Threaded: Iteration 12 of 20 fib(43) = 433494437
+Single Threaded: Iteration 13 of 20 fib(43) = 433494437
+Single Threaded: Iteration 14 of 20 fib(43) = 433494437
+Single Threaded: Iteration 15 of 20 fib(43) = 433494437
+Single Threaded: Iteration 16 of 20 fib(43) = 433494437
+Single Threaded: Iteration 17 of 20 fib(43) = 433494437
+Single Threaded: Iteration 18 of 20 fib(43) = 433494437
+Single Threaded: Iteration 19 of 20 fib(43) = 433494437
+
+Time taken for single-threaded version: 58818.5 ms
+Calculating fib(43) in a multi-threaded version...
+WorkerThread 216640WorkerThread 217340: Result of fib(43) = 433494437: Result of fib(
+43) = 433494437
+WorkerThread 216760: Result of fib(43) = 433494437
+WorkerThread 216792: Result of fib(43) = 433494437
+WorkerThread 216380: Result of fib(43) = 433494437
+WorkerThread 217368: Result of fib(43) = 433494437
+WorkerThread 199888: Result of fib(43) = 433494437
+WorkerThread 204872: Result of fib(43) = 433494437
+WorkerThread 206520: Result of fib(43) = 433494437
+WorkerThread 217156: Result of fib(43) = 433494437
+WorkerThread 213856: Result of fib(43) = 433494437
+WorkerThread 213848: Result of fib(43) = 433494437
+WorkerThread 217324: Result of fib(43) = 433494437
+WorkerThread 217352: Result of fib(43) = 433494437
+WorkerThread 217348: Result of fib(43) = 433494437
+WorkerThread 217152: Result of fib(43) = 433494437
+WorkerThread 215420: Result of fib(43) = 433494437
+WorkerThread 216696: Result of fib(43) = 433494437
+WorkerThread 217224: Result of fib(43) = 433494437
+WorkerThread 18104: Result of fib(43) = 433494437
+
+Time taken for multi-threaded version: 6641.53 ms
+
+Speedup: 8.85615x

@@ -1,11 +1,10 @@
 /*****************************************************************//**
- * \file   Fib.cpp
- * \brief  
- * 
- * \author Simon
- * \date   March 2026
+ * @file Fib.cpp
+ * @brief Implementation of simple Fibonacci helpers and multi-threaded demos.
+ *
+ * Contains recursive fibonacci implementation, thread wrappers and
+ * benchmark/printing helpers that spawn Windows threads.
  *********************************************************************/
-
 #include "Fib.hpp"
 #include <thread>
 #include <algorithm>
@@ -13,21 +12,32 @@
 #include <iostream>
 #include <conio.h>
 #include <Windows.h>
+#include <string>
 #include "StopWatch.h"
 #include "Hlp.h"
 
+
 using namespace std;
 
-DWORD WINAPI calculate_fib_sequence(LPVOID max_n);
+const string ERROR_CREATING_THREAD = "Failed to create thread: ";
 
+/**
+ * @brief Print the computed Fibonacci value from a worker thread.
+ * @param n Input to fib.
+ * @param fib Result of fib(n).
+ */
 void Print_Fib(size_t n, size_t fib) {
 	std::cout.flush();
 	std::cout << "WorkerThread " << std::this_thread::get_id();
-	Sleep(0);
 	std::cout << ": Result of fib(" << n << ") = " << fib << std::endl;
 	std::cout.flush();
 }
 
+/**
+ * @brief Recursive Fibonacci implementation (exponential time).
+ * @param n Fibonacci index.
+ * @return fib(n).
+ */
 size_t fib(size_t n) {
 
 	if (n <= 1) return n;
@@ -35,6 +45,11 @@ size_t fib(size_t n) {
 	return fib(n - 1) + fib(n - 2);
 }
 
+/**
+ * @brief Thread procedure to calculate a single fib(n) and print the result.
+ * @param n Pointer to size_t containing the input n.
+ * @return 0 on success.
+ */
 DWORD WINAPI calculate_fib(LPVOID n) {
 
 	const size_t num = *(static_cast<size_t*>(n));
@@ -44,14 +59,17 @@ DWORD WINAPI calculate_fib(LPVOID n) {
 	return 0;
 }
 
-
+/**
+ * @brief Thread procedure to print the full Fibonacci sequence 0..max_n.
+ * @param max_n Pointer to size_t containing the maximum n.
+ * @return 0 on success.
+ */
 DWORD WINAPI calculate_fib_sequence(LPVOID max_n) {
 
 	const size_t max_num = *(static_cast<size_t*>(max_n));
 
 	for (size_t i = 0; i <= max_num; ++i) {
 		Print_Fib(i, fib(i));
-		Sleep(0);
 	}
 
 	return 0;
@@ -61,13 +79,17 @@ DWORD WINAPI calculate_fib_sequence(LPVOID max_n) {
 
 void PrintFibSequenceMultiThreaded(size_t max_fib_n) {
 
+	// get the number of logical processors available on the system
+	// if the number of logical processors is less than 4, use 4 threads as a fallback (for older systems)
 	const size_t num_of_processors = std::thread::hardware_concurrency();
 	const size_t min_threads = 4;
-	const size_t num_of_threads = num_of_processors < min_threads ? min_threads : num_of_processors; // Fallback to 4 threads on older systems
+	const size_t num_of_threads = num_of_processors < min_threads ? min_threads : num_of_processors;
 
+	// vectors to store the handles and thread IDs of the worker threads
 	vector<HANDLE> worker_threads;
 	vector<DWORD> thread_ids(num_of_threads, 0);
 
+	// reserve space in the vectors to avoid reallocations
 	worker_threads.reserve(num_of_threads);
 
 	cout << "Detected " << num_of_processors << " logical processors." << endl;
@@ -75,22 +97,30 @@ void PrintFibSequenceMultiThreaded(size_t max_fib_n) {
 	for (size_t i = 0; i < num_of_processors; ++i) {
 
 		// create a new worker thread and call the calculate_fib_sequence function
-		// handle -> void* Adresse vom Thread
-		worker_threads.emplace_back(CreateThread(
+		// handle -> void* address of the thread
+		HANDLE Worker = CreateThread(
 			0,
 			0, // default stack size (1MB), value determines the number of bytes
 			calculate_fib_sequence,
 			&max_fib_n,
 			0,
 			&thread_ids.at(i)
-		));
+		);
+
+		if (Worker == nullptr) {
+			throw runtime_error(ERROR_CREATING_THREAD + Hlp::ErrMsg(GetLastError()));
+		}
+
+		worker_threads.emplace_back(move(Worker));
 
 		cout << "Created thread with ID: " << thread_ids.back() << endl;
 	}
 
-	WaitForMultipleObjects(static_cast<DWORD>(worker_threads.size()), worker_threads.data(), TRUE, INFINITE);
 
+	// Wait for all worker threads to finish and close their handles
 	for_each(worker_threads.cbegin(), worker_threads.cend(), [](const HANDLE& hThread) {
+		// wait for the thread to finish
+		WaitForSingleObject(hThread, INFINITE);
 		CloseHandle(hThread);
 	});
 }
@@ -103,9 +133,10 @@ void BenchmarkFib(size_t max_fib_n) {
 	const size_t min_threads = 4;
 	const size_t num_of_threads = num_of_processors < min_threads ? min_threads : num_of_processors; // Fallback to 4 threads on older systems
 
+	// vectors to store the handles and thread IDs of the worker threads
 	vector<HANDLE> worker_threads;
 	vector<DWORD> thread_ids(num_of_threads, 0);
-
+	// reserve space in the vectors to avoid reallocations
 	worker_threads.reserve(num_of_threads);
 
 
@@ -115,11 +146,9 @@ void BenchmarkFib(size_t max_fib_n) {
 	// then calculate k-Times the fib of (n) in a multi-threaded version and measure the time
 
 	// Single Threaded Version k-Times fib(n)
-
-
-
 	cout << "Calculating fib(" << max_fib_n << ") in a single-threaded version..." << endl;
 
+	// start the stopwatch to measure the time taken for the single-threaded version
 	double single_threaded_time = 0.0;
 	double multi_threaded_time = 0.0;
 
@@ -132,8 +161,6 @@ void BenchmarkFib(size_t max_fib_n) {
 
 	cout << endl << "Time taken for single-threaded version: " << single_threaded_time << " ms" << endl;
 
-
-
 	// Multi Threaded Version k-Times fib(n)
 
 	cout << "Calculating fib(" << max_fib_n << ") in a multi-threaded version..." << endl;
@@ -142,29 +169,34 @@ void BenchmarkFib(size_t max_fib_n) {
 
 	for (size_t i = 0; i < num_of_processors; ++i) {
 
-		// create a new worker thread and call the calculate_fib_sequence function
-		// handle -> void* Adresse vom Thread
-		worker_threads.emplace_back(CreateThread(
+		// create a new worker thread and call the calculate_fib function
+		// handle -> void* address of the thread
+		HANDLE Worker = CreateThread(
 			0,
 			0, // default stack size (1MB), value determines the number of bytes
 			calculate_fib,
 			&max_fib_n,
 			0,
 			&thread_ids.at(i)
-		));
+		);
 
+		if(Worker == nullptr) {
+			throw runtime_error(ERROR_CREATING_THREAD + Hlp::ErrMsg(GetLastError()));
+		}
+
+		worker_threads.emplace_back(move(Worker));
 	}
 
-	WaitForMultipleObjects(static_cast<DWORD>(worker_threads.size()), worker_threads.data(), TRUE, INFINITE);
-
+	// Wait for all worker threads to finish and close their handles
 	for_each(worker_threads.cbegin(), worker_threads.cend(), [](const HANDLE& hThread) {
+		WaitForSingleObject(hThread, INFINITE);
 		CloseHandle(hThread);
-		});
+	});
 
 	multi_threaded_time = stw::Stop_ms();
 
 	cout << endl << "Time taken for multi-threaded version: " << multi_threaded_time << " ms" << endl;
 
-	cout << endl << "Speedup: " << single_threaded_time / multi_threaded_time << "x" << endl;
+	cout << endl << "Speedup: " << single_threaded_time / multi_threaded_time << "x" << endl<< endl;
 }
 

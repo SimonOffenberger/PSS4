@@ -1,11 +1,11 @@
 \documentclass[a4paper,12pt]{article}
 \usepackage{pdfpages}
-\usepackage[cp1252]{inputenc}
+\usepackage[utf8]{inputenc}
 \usepackage{lipsum}
 \usepackage{listings}
 \usepackage{pdflscape}
 \usepackage{graphicx}
-\usepackage[margin=1.5cm]{geometry} % Verkleinert die Ränder
+\usepackage[margin=1.5cm]{geometry} % Verkleinert die Rï¿½nder
 \definecolor{okgreen}{rgb}{0.0, 0.5, 0.0}
 
 \lstdefinestyle{cppstyle}{
@@ -47,40 +47,212 @@
 }
 
 \begin{document}
-\includepdf[pages=1-3] {Angabe_Uebung8.pdf}
+\includepdf[pages=1-2] {Angabe_Uebung1.pdf}
 \newpage
-\section{Beispiel 1 Shift Template}
-\subsection{Lösungsidee}
-Die vorliegende Funktion bietet eine generische Lösung zum Linksschieben von Elementen in beliebigen Containern mittels Iteratoren. Dabei werden die ersten count Elemente entfernt, die restlichen nach vorne verschoben und die freigewordenen Positionen am Ende mit einem festen Wert aufgefüllt. Durch die Verwendung von Templates ist die Funktion flexibel und für verschiedene Containertypen wie std::vector oder std::list einsetzbar, sofern deren Iteratoren grundlegende Operationen wie Inkrementieren und Dereferenzieren unterstützen. Die Implementierung erfolgt in-place, wodurch keine zusätzlichen Speicherressourcen benötigt werden und die Effizienz gewahrt bleibt.
-\subsection{ShiftTemplate.hpp}
-\lstinputlisting[style=cppstyle]{Uebung8/Uebung8/ShiftTemplate.hpp}
+\section{Beispiel 1 VerstÃ¤ndnis Frage:}
+In einem Multithreaded-Programm haben Sie
+eine Funktion, wo (a) eine lokale Variable und alternativ dazu (b) eine statische lokale Variable deklariert ist. ErlÃ¤utern Sie, ob es hier zu Problemen kommen kann - wenn ja, warum,
+wenn nein, warum nicht.
+
+\subsection{Antwort (a) lokale Variable:}
+Wird in einem Multithreaded-Programm eine lokale Variable in einer Funktion deklariert, so existiert diese pro Thread separat.
+Jeder Thread hat seinen eigenen Stack, auf dem die lokalen Variablen gespeichert werden. Daher gibt es keine Probleme mit der Verwendung von lokalen Variablen in einem Multithreaded-Programm.
+
+\subsection{Antwort (b) statische lokale Variable:}
+Wird eine statische lokale Variable in einer Funktion deklariert, so existiert diese nur einmal im Speicher (im Daten-Segment des Prozesses) und wird von allen Threads gemeinsam verwendet. Dies kann zu Problemen fÃ¼hren, da Ã„nderungen an der Variablen von einem Thread vorgenommen werden kÃ¶nnen, wÃ¤hrend ein anderer Thread darauf zugreift. 
+
+\section{Beispiel 2 Multithreaded Fibonacci:}
+\subsection{ (a) Implementierung:}
+\subsubsection{Fib.hpp}
+\lstinputlisting[style=cppstyle]{./../Uebung01/Fib.hpp}
 \newpage
-\section{Beispiel 2 Count Pairs}
-\subsection{Lösungsidee}
-Die Funktion \texttt{CountPairs} bietet eine generische Möglichkeit, echte Paare in einem Container zu zählen – also exakt zwei unmittelbar aufeinanderfolgende, gleiche Elemente. Durch die Nutzung von \texttt{std::adjacent\_find} wird effizient nach solchen Paaren gesucht, wobei längere Sequenzen gleicher Werte bewusst ausgeschlossen werden. Die Funktion arbeitet iteratorbasiert und ist dadurch für verschiedenste Containertypen flexibel einsetzbar.
-\subsection{CountPairs.hpp}
-\lstinputlisting[style=cppstyle]{Uebung8/Uebung8/CountPairs.hpp}
+\subsubsection{Fib.cpp}
+\lstinputlisting[style=cppstyle]{./../Uebung01/Fib.cpp}
+
+\subsubsection{Funktionsbeschreibung}
+FÃ¼r die parallele Berechnung der Fibonacci Reihen werden fÃ¼r jeden logischen Prozessor ein Thread erstellt.\\
+Jeder dieser Threads berechnet die Fibonacci Folge bis zum n-ten Element.\\
+N wird hier vom Aufrufer der Funktion \textbf{PrintFibSequenceMultithread} Ã¼bergeben.\\
+Jeder Thread berechnet die Fibonacci Folge bis zum n-ten Element und gibt diese auf der Konsole aus.\\
+Die Berechnung der Fibonacci Zahlen erfolgt rekursiv.\\
+FÃ¼r die Threading FunktionalitÃ¤t wurde die Windows API verwendet.\\
+\\
+Nach ersten Test ist aufgefallen, dass die Ausgabe keiner Reihenfolge folgt.\\
+Da alle Threads gleichzeitig auf die Konsole zugreifen, kann es zu einer Vermischung der Ausgaben kommen.\\
+\\
+\subsection{(b) Sleep(0)}
+\subsubsection{Quell Code}
+\begin{lstlisting}[style=cppstyle]
+ /**
+ * @brief Print the computed Fibonacci value from a worker thread.
+ * @param n Input to fib.
+ * @param fib Result of fib(n).
+ */
+void Print_Fib(size_t n, size_t fib) {
+	std::cout.flush();
+	std::cout << "WorkerThread " << std::this_thread::get_id();
+	Sleep(0);
+	std::cout << ": Result of fib(" << n << ") = " << fib << std::endl;
+	std::cout.flush();
+}
+
+/**
+ * @brief Thread procedure to print the full Fibonacci sequence 0..max_n.
+ * @param max_n Pointer to size_t containing the maximum n.
+ * @return 0 on success.
+ */
+DWORD WINAPI calculate_fib_sequence(LPVOID max_n) {
+
+	const size_t max_num = *(static_cast<size_t*>(max_n));
+
+	for (size_t i = 0; i <= max_num; ++i) {
+		Print_Fib(i, fib(i));
+		Sleep(0);
+	}
+
+	return 0;
+}
+\end{lstlisting}
+
+\subsubsection{Testausgabe:}
+\lstinputlisting[style=teststyle]{./../Uebung01/TestFiboutput.txt}
+\subsubsection{Funktionsbeschreibung:}
+Wie in der Testausgabe zu sehen ist, folgt die Ausgabe keiner Reihenfolge.\\
+Da alle Threads gleichzeitig auf die Konsole zugreifen.\\
+Wird nun Sleep(0) in die Funktion Print\_Fib eingebaut, so wird der aktuelle Thread freiwillig ausgesetzt.\\
+Dadurch wird die Ausgabe auf der Konsole noch unvorhersehbarer.\\
+Die Reihenfolge der Ausgabe Ã¤ndert sich jedes Mal, wenn das Programm ausgefÃ¼hrt wird. (nicht deterministisch)\\
 \newpage
-\section{Beispiel 3 Set Operations}
-\subsection{Lösungsidee}
-Die bereitgestellten Template-Funktionen \texttt{Union}, \texttt{Intersection} und \texttt{Difference} ermöglichen grundlegende Mengenoperationen auf beliebigen Containern mittels Iteratoren. Ziel ist es, die Vereinigungs-, Schnitt- und Differenzmenge zweier Container generisch zu berechnen und das Ergebnis über einen Zieliterator (\texttt{begin3}) auszugeben. Dabei wird für jede Operation sichergestellt, dass doppelte Elemente vermieden werden, indem diese mithilfe von \texttt{std::find} überprüft werden. Die Funktionen arbeiten vollständig iteratorbasiert und lassen sich somit flexibel für verschiedene Containertypen wie \texttt{std::vector}, \texttt{std::list} oder \texttt{std::deque} einsetzen. 
-\subsection{SetOperations.hpp}
-\lstinputlisting[style=cppstyle]{Uebung8/Uebung8/SetOperations.hpp}
+\subsection{(c) Speedup}
+\subsubsection{Quell Code}
+\begin{lstlisting}[style=cppstyle]
+void BenchmarkFib(size_t max_fib_n) {
+
+	const size_t num_of_processors = std::thread::hardware_concurrency();
+	const size_t min_threads = 4;
+	const size_t num_of_threads = num_of_processors < min_threads ? min_threads : num_of_processors; // Fallback to 4 threads on older systems
+
+	// vectors to store the handles and thread IDs of the worker threads
+	vector<HANDLE> worker_threads;
+	vector<DWORD> thread_ids(num_of_threads, 0);
+	// reserve space in the vectors to avoid reallocations
+	worker_threads.reserve(num_of_threads);
+
+
+	// c)
+	// Calculation of the speedup of the parallelized version compared to a single-threaded version
+	// first calculate k-Times the fib of (n) in a single-threaded version and measure the time
+	// then calculate k-Times the fib of (n) in a multi-threaded version and measure the time
+
+	// Single Threaded Version k-Times fib(n)
+	cout << "Calculating fib(" << max_fib_n << ") in a single-threaded version..." << endl;
+
+	// start the stopwatch to measure the time taken for the single-threaded version
+	double single_threaded_time = 0.0;
+	double multi_threaded_time = 0.0;
+
+	stw::Start();
+
+	for (size_t i = 0; i < num_of_processors; ++i) {
+		cout << "Single Threaded: Iteration " << i << " of " << num_of_processors << " fib(" << max_fib_n << ") = " << fib(max_fib_n) << endl;
+	}
+	single_threaded_time = stw::Stop_ms();
+
+	cout << endl << "Time taken for single-threaded version: " << single_threaded_time << " ms" << endl;
+
+	// Multi Threaded Version k-Times fib(n)
+
+	cout << "Calculating fib(" << max_fib_n << ") in a multi-threaded version..." << endl;
+
+	stw::Start();
+
+	for (size_t i = 0; i < num_of_processors; ++i) {
+
+		// create a new worker thread and call the calculate_fib function
+		// handle -> void* address of the thread
+		HANDLE Worker = CreateThread(
+			0,
+			0, // default stack size (1MB), value determines the number of bytes
+			calculate_fib,
+			&max_fib_n,
+			0,
+			&thread_ids.at(i)
+		);
+
+		if(Worker == nullptr) {
+			throw runtime_error(ERROR_CREATING_THREAD + Hlp::ErrMsg(GetLastError()));
+		}
+
+		worker_threads.emplace_back(move(Worker));
+	}
+
+	// Wait for all worker threads to finish and close their handles
+	for_each(worker_threads.cbegin(), worker_threads.cend(), [](const HANDLE& hThread) {
+		WaitForSingleObject(hThread, INFINITE);
+		CloseHandle(hThread);
+	});
+
+	multi_threaded_time = stw::Stop_ms();
+
+	cout << endl << "Time taken for multi-threaded version: " << multi_threaded_time << " ms" << endl;
+
+	cout << endl << "Speedup: " << single_threaded_time / multi_threaded_time << "x" << endl<< endl;
+}
+\end{lstlisting}
+
+\subsubsection{Testausgabe:}
+\lstinputlisting[style=teststyle]{./../Uebung01/TestFibBenchmarkoutput.txt}
+\subsection{Funktionsbeschreibung:}
+In der Funktion \textbf{BenchmarkFib} wird der Speedup der parallelen Berechnung der Fibonacci Zahlen ermittelt.\\
+Hier wird zunÃ¤chst fÃ¼r k mal Fib(n) berechnet und die Zeit gemessen.\\
+k ist hier die Anzahl der logischen Prozessoren.\\
+AnschlieÃŸend wird die gleiche Berechnung in einer parallelen Version durchgefÃ¼hrt und die Zeit gemessen
+Der Speedup ergibt sich durch:\\
+\begin{center}
+\textbf{Speedup = Time\_Single\_Threaded / Time\_Multi\_Threaded}
+\end{center}
+In der Testausgabe ist zu sehen, dass die parallele Version deutlich schneller ist als die single-threaded Version.\\
+Der Speedup betrÃ¤gt hier ca. 8.86.\\
+Erwartet wurde eher ein Speedup der sich nahe an k befindet.\\
+Da die Berechnung auf einem Laptop mit effizienz und hochleistungs Kernen durchgefÃ¼hrt wurde, ist der Speedup niedriger als die Anzahl der logischen Prozessoren.\\
+AuÃŸerdem bricht bei Belastung aller CPU Kerne die Taktfrequenz ein.\\ 
 \newpage
-\begin{landscape}
-\subsection{Testtreiber main.cpp}
-\lstinputlisting[style=cppstyle]{Uebung8/Uebung8/main.cpp}
-\end{landscape}
+\section{Beispiel 3: Multithreaded Matrixmultiplikation}
+\subsection{(a) Implementierung:}
+
+\subsubsection{Matrix.h}
+\lstinputlisting[style=cppstyle]{./../Uebung01/Matrix.h}
 \newpage
-\begin{landscape}
-\subsection{Testfunktionen Test.hpp}
-\lstinputlisting[style=cppstyle]{Uebung8/Uebung8/Test.hpp}
-\newpage
-\subsection{Tests}
-Für die Tests der Templates wurde darauf geachtet, dass diese auf verschieden Container und Datentypen angewendet wurde.
-Besonders der Test von verschiedenen Iteratortypen ist hier wichtig. (Forward Iterator, Random Access Iterator usw.).
-Die Testfälle sind in der Ausgabe genauer beschrieben.
-\subsubsection{Testoutput:}
-\lstinputlisting[style=teststyle]{Uebung8/Uebung8/TestResult.txt}
-\end{landscape}
+\subsubsection{Matrix.cpp}
+\lstinputlisting[style=cppstyle]{./../Uebung01/Matrix.cpp}
+
+\subsubsection{Funktionsbeschreibung}
+FÃ¼r die Implementierung wurde die bereitgestellte Klasse Matrix verwendet.\\
+Die Matrixmultiplikation wurde mittes \textbf{operator*} realisiert.\\
+FÃ¼r die Parallelisierung wird fÃ¼r jeder Zelle der Ergebnis Matrix ein Thread erstellt.\\
+Dieser Thread erhÃ¤lt seine Daten mittels einer Struktur. \\
+Das Ergebnis wird direkt Ã¼ber einen Zeiger in die Ergebnis Matrix geschrieben.\\
+Das gleichzeitige Schreiben in die Ergebnis Matrix fÃ¼hrt zu keinen Problemen, da jeder Thread nur auf seine eigene Zelle zugreift.\\ 
+Lesen aus den Eingabe Matrizen fÃ¼hrt ebenfalls zu keinen Problemen, da diese nicht verÃ¤ndert werden.\\
+
+\subsection{(b) Fragen}
+\subsubsection{Kann es zu einer Racecondition kommen?}
+Nein!\\
+Da jeder Thread nur auf seine eigene Zelle der Ergebnis Matrix zugreift, gibt es keine gemeinsamen Ressourcen, die von mehreren Threads gleichzeitig verÃ¤ndert werden kÃ¶nnten.\\
+AuÃŸerdem werden die Eingabe Matrizen nicht verÃ¤ndert, sondern nur gelesen!.
+
+\subsubsection{Kann gleichzeitig zur Multiplikation ohne das Ergebnis zu verfÃ¤lschen die Spur der Matrix A berechnet werden?}
+Ja!\\
+Die Eingabe Matrizen werden durch die Multiplikation nicht verÃ¤ndert!\\
+Es kÃ¶nnen beliebig viele Threads gleichzeitig auf die Eingabe Matrizen zugreifen, ohne dass es zu Problemen kommt.\\
+
+\subsubsection{Kann gleichzeitig zur Multiplikation ohne das Ergebnis zu verfÃ¤lschen die Matrix B transponiert werden?}
+Nein, wenn dies Inplace geschiehen soll.\\
+Ja, wenn die Ausgangsmatrix B nicht verÃ¤ndert wird, und die transponierte Matrix in einer neuen Matrix gespeichert wird.\\
+Die Eingabe Matrizen dÃ¼rfen nicht verÃ¤ndert werden.\\
+Sonst wird das Ergebnis der Multiplikation verfÃ¤lscht.\\
+Es kommt zu einer Racecondition, da die Threads gleichzeitig auf die Matrix B zugreifen und mindestens ein Thread diese verÃ¤ndert.\\
+
+\subsubsection{Testausgabe:}
+\lstinputlisting[style=teststyle]{./../Uebung01/Testoutput.txt}
 \end{document}

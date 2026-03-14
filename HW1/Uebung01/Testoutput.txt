@@ -1,0 +1,56 @@
+
+*******************************************
+             TESTCASE START                
+*******************************************
+
+Test for Matrix Multiplication with 0 Matrix
+[Test OK] Result: (Expected: 
+0  0  0  
+0  0  0  
+0  0  0  
+ == Result: 
+0  0  0  
+0  0  0  
+0  0  0  
+)
+
+Test for Matrix Multiplication with Identity Matrix
+[Test OK] Result: (Expected: 
+5  5  5  
+5  5  5  
+5  5  5  
+ == Result: 
+5  5  5  
+5  5  5  
+5  5  5  
+)
+
+Test for Matrix Multiplication with negative Identity Matrix
+[Test OK] Result: (Expected: 
+-5  -5  -5  
+-5  -5  -5  
+-5  -5  -5  
+ == Result: 
+-5  -5  -5  
+-5  -5  -5  
+-5  -5  -5  
+)
+
+Test for Matrix Multiplication with provided Example
+[Test OK] Result: (Expected: 
+6  4  2  
+-12  -5  2  
+12  2  -8  
+ == Result: 
+6  4  2  
+-12  -5  2  
+12  2  -8  
+)
+
+Test for Exception in TestCase
+[Test OK] Result: (Expected: true == Result: true)
+
+
+*******************************************
+
+TEST OK!!
