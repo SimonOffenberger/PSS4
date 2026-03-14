@@ -5,7 +5,12 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include <cassert>
+#include <vector>
+#include <algorithm>
 #include "Matrix.h"
+#include "windows.h"
+
+using namespace std;
 
 // init entire matrix with value val
 void Matrix::Init(double const & val) {
@@ -67,6 +72,72 @@ void Matrix::AttachTemperature() {
 }
 
 
+typedef struct {
+	const Matrix* pMatrixA;
+    const Matrix* pMatrixB;
+	Matrix* pResultMatrix;
+	size_t row;
+	size_t col;
+}TCellTask ;
+
+
+DWORD WINAPI Matrix_Cell_Mul(LPVOID ptask) {
+
+    TCellTask* task = static_cast<TCellTask*>(ptask);
+
+    double sum = 0;
+    for (size_t k = 0; k < task->pMatrixA->n; ++k) {
+        sum += task->pMatrixA->GetMatrix()[task->row][k] * task->pMatrixB->GetMatrix()[k][task->col];
+    }
+
+    task->pResultMatrix->GetMatrix()[task->row][task->col] = sum;
+
+    return 0;
+}
+
+
+Matrix Matrix::operator*(Matrix const & other) const
+{
+    Matrix result;               // Beispiel
+    const size_t num_threads = n * n;
+    size_t idx = 0;
+    std::vector<TCellTask> tasks;
+    std::vector<HANDLE> worker_threads;
+    worker_threads.reserve(num_threads);
+	tasks.reserve(num_threads);
+
+    std::vector<DWORD> thread_ids(num_threads, 0);
+
+    for (size_t row = 0; row < n; ++row) {
+        for (size_t col = 0; col < n; ++col) {
+
+			TCellTask task{ this, &other, &result, row, col };
+
+            tasks.emplace_back(move(task));
+
+            worker_threads.emplace_back(CreateThread(
+                0,
+                0, // default stack size (1MB), value determines the number of bytes
+                Matrix_Cell_Mul,
+                &tasks.back(),
+                0,
+                &thread_ids.at(idx)
+            ));
+
+            ++idx;
+        }
+    }
+
+    for_each(worker_threads.cbegin(), worker_threads.cend(), [](const HANDLE& hThread) {
+        WaitForSingleObject(hThread, INFINITE);
+		});
+
+    for_each(worker_threads.cbegin(), worker_threads.cend(), [](const HANDLE& hThread) {
+        CloseHandle(hThread);
+    });
+
+    return move(result);
+}
 
 // print the matrix
 void Matrix::Print(std::ostream & ost) {

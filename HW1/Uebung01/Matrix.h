@@ -11,11 +11,12 @@
 class Matrix {
 public:
     // Declarations and Members
-    static int const n = 32 /* 250*/ ;   // size of matrix: set this value according your needs!
+    static int const n = 64 /* 250*/ ;   // size of matrix: set this value according your needs!
     typedef double TMatrix[n][n];        // type of matrix
  
     // CTor
     Matrix() {}
+
     // DTor
     virtual ~Matrix() {}
 
@@ -29,6 +30,12 @@ public:
     TMatrix & GetMatrix() {
         return mMatrix;
     }
+
+    const TMatrix & GetMatrix() const {
+        return mMatrix;
+    }
+
+	Matrix operator*(Matrix const & other) const;
 
     // print the matrix
     void Print(std::ostream & ost);

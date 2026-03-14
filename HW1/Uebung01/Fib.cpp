@@ -66,7 +66,7 @@ void PrintFibSequenceMultiThreaded(size_t max_fib_n) {
 	const size_t num_of_threads = num_of_processors < min_threads ? min_threads : num_of_processors; // Fallback to 4 threads on older systems
 
 	vector<HANDLE> worker_threads;
-	vector<DWORD> thread_ids(10, 0);
+	vector<DWORD> thread_ids(num_of_threads, 0);
 
 	worker_threads.reserve(num_of_threads);
 
@@ -82,7 +82,7 @@ void PrintFibSequenceMultiThreaded(size_t max_fib_n) {
 			calculate_fib_sequence,
 			&max_fib_n,
 			0,
-			&thread_ids.back()
+			&thread_ids.at(i)
 		));
 
 		cout << "Created thread with ID: " << thread_ids.back() << endl;
@@ -104,7 +104,7 @@ void BenchmarkFib(size_t max_fib_n) {
 	const size_t num_of_threads = num_of_processors < min_threads ? min_threads : num_of_processors; // Fallback to 4 threads on older systems
 
 	vector<HANDLE> worker_threads;
-	vector<DWORD> thread_ids(10, 0);
+	vector<DWORD> thread_ids(num_of_threads, 0);
 
 	worker_threads.reserve(num_of_threads);
 
@@ -136,7 +136,7 @@ void BenchmarkFib(size_t max_fib_n) {
 
 	// Multi Threaded Version k-Times fib(n)
 
-	cout << "Calculating fib(" << max_fib_n << ") in a single-threaded version..." << endl;
+	cout << "Calculating fib(" << max_fib_n << ") in a multi-threaded version..." << endl;
 
 	stw::Start();
 
@@ -150,7 +150,7 @@ void BenchmarkFib(size_t max_fib_n) {
 			calculate_fib,
 			&max_fib_n,
 			0,
-			&thread_ids.back()
+			&thread_ids.at(i)
 		));
 
 	}
