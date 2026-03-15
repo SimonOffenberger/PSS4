@@ -21,7 +21,6 @@ static bool Test_Matrix_Multiplication(std::ostream & ost);
 
 int main(void){
 
-
     ofstream output{ "Testoutput.txt" };
     if (!output.is_open()) {
         cerr << "Konnte Testoutput.txt nicht oeffnen" << TestCaseFail;

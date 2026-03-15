@@ -2,7 +2,7 @@
  * @file Fib.cpp
  * @brief Implementation of simple Fibonacci helpers and multi-threaded demos.
  *
- * Contains recursive fibonacci implementation, thread wrappers and
+ * Contains recursive fibonacci implementation and
  * benchmark/printing helpers that spawn Windows threads.
  *********************************************************************/
 #include "Fib.hpp"
@@ -23,7 +23,11 @@ const string ERROR_CREATING_THREAD = "Failed to create thread: ";
 
 /**
  * @brief Print the computed Fibonacci value from a worker thread.
- * @param n Input to fib.
+ *
+ * Prints a single line identifying the worker thread and the computed
+ * Fibonacci value for the given input.
+ *
+ * @param n Input index to fib().
  * @param fib Result of fib(n).
  */
 void Print_Fib(size_t n, size_t fib) {
@@ -34,7 +38,10 @@ void Print_Fib(size_t n, size_t fib) {
 }
 
 /**
- * @brief Recursive Fibonacci implementation (exponential time).
+ * @brief Recursive Fibonacci implementation.
+ *
+ * Computes the nth Fibonacci number using a recursive algorithm.
+ *
  * @param n Fibonacci index.
  * @return fib(n).
  */
@@ -47,8 +54,13 @@ size_t fib(size_t n) {
 
 /**
  * @brief Thread procedure to calculate a single fib(n) and print the result.
- * @param n Pointer to size_t containing the input n.
- * @return 0 on success.
+ *
+ * This function is intended to be used as a Windows thread entry point.
+ * It expects a pointer to a `size_t` containing the input `n`. The thread
+ * computes `fib(n)` and prints the result via `Print_Fib`.
+ *
+ * @param n Pointer to `size_t` containing the input n (passed as LPVOID).
+ * @return DWORD Thread exit code (0 on success).
  */
 DWORD WINAPI calculate_fib(LPVOID n) {
 
@@ -61,8 +73,13 @@ DWORD WINAPI calculate_fib(LPVOID n) {
 
 /**
  * @brief Thread procedure to print the full Fibonacci sequence 0..max_n.
- * @param max_n Pointer to size_t containing the maximum n.
- * @return 0 on success.
+ *
+ * This function is intended to be used as a Windows thread entry point.
+ * It expects a pointer to a `size_t` containing the maximum `n`. The thread
+ * iterates from 0..max_n computing and printing each Fibonacci value.
+ *
+ * @param max_n Pointer to `size_t` containing the maximum n (passed as LPVOID).
+ * @return DWORD Thread exit code (0 on success).
  */
 DWORD WINAPI calculate_fib_sequence(LPVOID max_n) {
 
@@ -76,7 +93,17 @@ DWORD WINAPI calculate_fib_sequence(LPVOID max_n) {
 }
 
 
-
+/**
+ * @brief Spawn multiple threads that print the Fibonacci sequence up to `max_fib_n`.
+ *
+ * Determines the number of logical processors and spawns one worker thread per
+ * logical processor (with a minimum fallback of 4 threads). Each worker thread
+ * executes `calculate_fib_sequence` with a pointer to `max_fib_n`.
+ *
+ * Note: This function throws `std::runtime_error` if a thread cannot be created.
+ *
+ * @param max_fib_n Maximum Fibonacci index to print (each thread prints 0..max_fib_n).
+ */
 void PrintFibSequenceMultiThreaded(size_t max_fib_n) {
 
 	// get the number of logical processors available on the system
@@ -127,6 +154,18 @@ void PrintFibSequenceMultiThreaded(size_t max_fib_n) {
 
 
 
+/**
+ * @brief Benchmark single-threaded vs multi-threaded Fibonacci computation.
+ *
+ * Measures the time to compute `fib(max_fib_n)` `k` times in both single-threaded
+ * and multi-threaded modes, where `k` equals the number of logical processors
+ * (with a minimum fallback of 4). The multi-threaded version spawns one thread
+ * per processor that executes `calculate_fib`.
+ *
+ * Note: This function throws `std::runtime_error` if a thread cannot be created.
+ *
+ * @param max_fib_n Fibonacci index to compute in benchmarks.
+ */
 void BenchmarkFib(size_t max_fib_n) {
 
 	const size_t num_of_processors = std::thread::hardware_concurrency();
