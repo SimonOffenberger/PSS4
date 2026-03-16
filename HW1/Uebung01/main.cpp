@@ -30,8 +30,8 @@ int main(void){
     try {
 		bool TestOK = true; 
 
-	    PrintFibSequenceMultiThreaded(10);
-	    BenchmarkFib(10);
+	    PrintFibSequenceMultiThreaded(40);
+	    BenchmarkFib(43);
 
         TestOK = TestOK && Test_Matrix_Multiplication(cout);
 

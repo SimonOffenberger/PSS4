@@ -12,6 +12,7 @@
 #include <iostream>
 #include <conio.h>
 #include <Windows.h>
+#include <winerror.h>
 #include <string>
 #include "StopWatch.h"
 #include "Hlp.h"
@@ -68,7 +69,7 @@ DWORD WINAPI calculate_fib(LPVOID n) {
 
 	Print_Fib(num, fib(num));
 
-	return 0;
+	return NO_ERROR;
 }
 
 /**
@@ -89,7 +90,7 @@ DWORD WINAPI calculate_fib_sequence(LPVOID max_n) {
 		Print_Fib(i, fib(i));
 	}
 
-	return 0;
+	return NO_ERROR;
 }
 
 
@@ -104,13 +105,14 @@ DWORD WINAPI calculate_fib_sequence(LPVOID max_n) {
  *
  * @param max_fib_n Maximum Fibonacci index to print (each thread prints 0..max_fib_n).
  */
-void PrintFibSequenceMultiThreaded(size_t max_fib_n) {
+void PrintFibSequenceMultiThreaded(const size_t max_fib_n) {
 
 	// get the number of logical processors available on the system
 	// if the number of logical processors is less than 4, use 4 threads as a fallback (for older systems)
 	const size_t num_of_processors = std::thread::hardware_concurrency();
 	const size_t min_threads = 4;
 	const size_t num_of_threads = num_of_processors < min_threads ? min_threads : num_of_processors;
+	size_t fib_n = max_fib_n;
 
 	// vectors to store the handles and thread IDs of the worker threads
 	vector<HANDLE> worker_threads;
@@ -129,7 +131,7 @@ void PrintFibSequenceMultiThreaded(size_t max_fib_n) {
 			0,
 			0, // default stack size (1MB), value determines the number of bytes
 			calculate_fib_sequence,
-			&max_fib_n,
+			&fib_n,
 			0,
 			&thread_ids.at(i)
 		);
@@ -148,6 +150,14 @@ void PrintFibSequenceMultiThreaded(size_t max_fib_n) {
 	for_each(worker_threads.cbegin(), worker_threads.cend(), [](const HANDLE& hThread) {
 		// wait for the thread to finish
 		WaitForSingleObject(hThread, INFINITE);
+
+		// Return Value of the thread
+		DWORD exitCode = 0;
+		GetExitCodeThread(hThread, &exitCode);
+		if (exitCode != NO_ERROR) {
+			throw runtime_error("Thread Exited with error: " + exitCode + Hlp::ErrMsg(exitCode));
+		}
+
 		CloseHandle(hThread);
 	});
 }
@@ -166,11 +176,12 @@ void PrintFibSequenceMultiThreaded(size_t max_fib_n) {
  *
  * @param max_fib_n Fibonacci index to compute in benchmarks.
  */
-void BenchmarkFib(size_t max_fib_n) {
+void BenchmarkFib(const size_t max_fib_n) {
 
 	const size_t num_of_processors = std::thread::hardware_concurrency();
 	const size_t min_threads = 4;
 	const size_t num_of_threads = num_of_processors < min_threads ? min_threads : num_of_processors; // Fallback to 4 threads on older systems
+	size_t fib_n = max_fib_n;
 
 	// vectors to store the handles and thread IDs of the worker threads
 	vector<HANDLE> worker_threads;
@@ -214,7 +225,7 @@ void BenchmarkFib(size_t max_fib_n) {
 			0,
 			0, // default stack size (1MB), value determines the number of bytes
 			calculate_fib,
-			&max_fib_n,
+			&fib_n,
 			0,
 			&thread_ids.at(i)
 		);
@@ -229,6 +240,14 @@ void BenchmarkFib(size_t max_fib_n) {
 	// Wait for all worker threads to finish and close their handles
 	for_each(worker_threads.cbegin(), worker_threads.cend(), [](const HANDLE& hThread) {
 		WaitForSingleObject(hThread, INFINITE);
+
+		// Return Value of the thread
+		DWORD exitCode = 0;
+		GetExitCodeThread(hThread, &exitCode);
+		if (exitCode != NO_ERROR) {
+			throw runtime_error("Thread Exited with error: " + exitCode + Hlp::ErrMsg(exitCode));
+		}
+
 		CloseHandle(hThread);
 	});
 

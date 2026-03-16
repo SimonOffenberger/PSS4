@@ -108,6 +108,14 @@ Matrix Matrix::operator*(Matrix const & other) const
 	// Wait for all worker threads to finish and close their handles
     for_each(worker_threads.cbegin(), worker_threads.cend(), [](const HANDLE& hThread) {
         WaitForSingleObject(hThread, INFINITE);
+
+        // Return Value of the thread
+        DWORD exitCode = 0;
+        GetExitCodeThread(hThread, &exitCode);
+        if (exitCode != NO_ERROR) {
+            throw runtime_error("Thread Exited with error: " + exitCode + Hlp::ErrMsg(exitCode));
+        }
+
         CloseHandle(hThread);
     });
 

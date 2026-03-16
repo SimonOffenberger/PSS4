@@ -13,13 +13,13 @@
  * @brief Run a benchmark for computing fib(max_fib_n) in single- and multi-threaded modes.
  * @param max_fib_n Maximum Fibonacci input to compute.
  */
-void BenchmarkFib(size_t max_fib_n);
+void BenchmarkFib(const size_t max_fib_n);
 
 /**
  * @brief Print the Fibonacci sequence up to max_fib_n using multiple worker threads.
  * @param max_fib_n Maximum Fibonacci input to compute and print.
  */
-void PrintFibSequenceMultiThreaded(size_t max_fib_n);
+void PrintFibSequenceMultiThreaded(const size_t max_fib_n);
 
 
 #endif // !FIB_HPP
