@@ -73,13 +73,14 @@ Wird eine statische lokale Variable in einer Funktion deklariert, so existiert d
 Für die parallele Berechnung der Fibonacci Reihen werden für jeden logischen Prozessor ein Thread erstellt.\\
 Jeder dieser Threads berechnet die Fibonacci Folge bis zum n-ten Element.\\
 N wird hier vom Aufrufer der Funktion \textbf{PrintFibSequenceMultithread} übergeben.\\
-Jeder Thread berechnet die Fibonacci Folge bis zum n-ten Element und gibt diese auf der Konsole aus.\\
+Die Ausgabe der Fibonacci Zahlen erfolgt auf der Konsole.\\
 Die Berechnung der Fibonacci Zahlen erfolgt rekursiv.\\
 Für die Threading Funktionalität wurde die Windows API verwendet.\\
 \\
 Nach ersten Test ist aufgefallen, dass die Ausgabe keiner Reihenfolge folgt.\\
 Da alle Threads gleichzeitig auf die Konsole zugreifen, kann es zu einer Vermischung der Ausgaben kommen.\\
 \\
+\newpage
 \subsection{(b) Sleep(0)}
 \subsubsection{Quell Code}
 \begin{lstlisting}[style=cppstyle]
@@ -308,7 +309,9 @@ Ja, wenn die Ausgangsmatrix B nicht verändert wird, und die transponierte Matri
 Die Eingabe Matrizen dürfen nicht verändert werden.\\
 Sonst wird das Ergebnis der Multiplikation verfälscht.\\
 Es kommt zu einer Racecondition, da die Threads gleichzeitig auf die Matrix B zugreifen und mindestens ein Thread diese verändert.\\
-
 \subsubsection{Testausgabe:}
 \lstinputlisting[style=teststyle]{./../Uebung01/Testoutput.txt}
+\newpage
+\subsubsection{Testtreiber:}
+\lstinputlisting[style=cppstyle]{./../Uebung01/main.cpp}
 \end{document}

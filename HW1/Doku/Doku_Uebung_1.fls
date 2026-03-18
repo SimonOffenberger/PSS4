@@ -159,6 +159,9 @@ INPUT ..\Uebung01\Matrix.cpp
 INPUT .\..\Uebung01\Testoutput.txt
 INPUT .\..\Uebung01\Testoutput.txt
 INPUT ..\Uebung01\Testoutput.txt
+INPUT .\..\Uebung01\main.cpp
+INPUT .\..\Uebung01\main.cpp
+INPUT ..\Uebung01\main.cpp
 INPUT Doku_Uebung_1.aux
 INPUT C:\Users\Simon\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmbx12.pfb
 INPUT C:\Users\Simon\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmbx12.pfb

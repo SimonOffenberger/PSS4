@@ -255,6 +255,11 @@ void BenchmarkFib(const size_t max_fib_n) {
 
 	cout << endl << "Time taken for multi-threaded version: " << multi_threaded_time << " ms" << endl;
 
-	cout << endl << "Speedup: " << single_threaded_time / multi_threaded_time << "x" << endl<< endl;
+	if (multi_threaded_time > 0) {
+		cout << endl << "Speedup: " << single_threaded_time / multi_threaded_time << "x" << endl << endl;
+	}
+	else {
+		cerr << "Multi-threaded time is zero, cannot calculate speedup." << endl;
+	}
 }
 
