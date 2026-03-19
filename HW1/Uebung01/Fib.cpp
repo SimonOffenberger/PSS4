@@ -32,10 +32,10 @@ const string ERROR_CREATING_THREAD = "Failed to create thread: ";
  * @param fib Result of fib(n).
  */
 void Print_Fib(const size_t n,const size_t fib) {
-	std::cout.flush();
-	std::cout << "WorkerThread " << std::this_thread::get_id();
-	std::cout << ": Result of fib(" << n << ") = " << fib << std::endl;
-	std::cout.flush();
+  std::cout.flush();
+  std::cout << "WorkerThread " << std::this_thread::get_id();
+  std::cout << ": Result of fib(" << n << ") = " << fib << std::endl;
+  std::cout.flush();
 }
 
 /**
@@ -48,9 +48,9 @@ void Print_Fib(const size_t n,const size_t fib) {
  */
 size_t fib(const size_t n) {
 
-	if (n <= 1) return n;
+  if (n <= 1) return n;
 
-	return fib(n - 1) + fib(n - 2);
+  return fib(n - 1) + fib(n - 2);
 }
 
 /**
@@ -65,11 +65,11 @@ size_t fib(const size_t n) {
  */
 DWORD WINAPI calculate_fib(LPVOID n) {
 
-	const size_t num = *(static_cast<size_t*>(n));
+  const size_t num = *(static_cast<size_t*>(n));
 
-	Print_Fib(num, fib(num));
+  Print_Fib(num, fib(num));
 
-	return NO_ERROR;
+  return NO_ERROR;
 }
 
 /**
@@ -84,13 +84,13 @@ DWORD WINAPI calculate_fib(LPVOID n) {
  */
 DWORD WINAPI calculate_fib_sequence(LPVOID max_n) {
 
-	const size_t max_num = *(static_cast<size_t*>(max_n));
+  const size_t max_num = *(static_cast<size_t*>(max_n));
 
-	for (size_t i = 0; i <= max_num; ++i) {
-		Print_Fib(i, fib(i));
-	}
+  for (size_t i = 0; i <= max_num; ++i) {
+    Print_Fib(i, fib(i));
+  }
 
-	return NO_ERROR;
+  return NO_ERROR;
 }
 
 
@@ -107,59 +107,73 @@ DWORD WINAPI calculate_fib_sequence(LPVOID max_n) {
  */
 void PrintFibSequenceMultiThreaded(const size_t max_fib_n) {
 
-	// get the number of logical processors available on the system
-	// if the number of logical processors is less than 4, use 4 threads as a fallback (for older systems)
-	const size_t num_of_processors = std::thread::hardware_concurrency();
-	const size_t min_threads = 4;
-	const size_t num_of_threads = num_of_processors < min_threads ? min_threads : num_of_processors;
-	size_t fib_n = max_fib_n;
+  // get the number of logical processors available on the system
+  // if the number of logical processors is less than 4, use 4 threads as a fallback (for older systems)
+  const size_t num_of_processors = std::thread::hardware_concurrency();
+  const size_t min_threads = 4;
+  const size_t num_of_threads = num_of_processors < min_threads ? min_threads : num_of_processors;
+  size_t fib_n = max_fib_n;
 
-	// vectors to store the handles and thread IDs of the worker threads
-	vector<HANDLE> worker_threads;
-	vector<DWORD> thread_ids(num_of_threads, 0);
+  // vectors to store the handles and thread IDs of the worker threads
+  vector<HANDLE> worker_threads;
+  vector<DWORD> thread_ids(num_of_threads, 0);
 
-	// reserve space in the vectors to avoid reallocations
-	worker_threads.reserve(num_of_threads);
+  // reserve space in the vectors to avoid reallocations
+  worker_threads.reserve(num_of_threads);
 
-	cout << "Detected " << num_of_processors << " logical processors." << endl;
+  cout << "Detected " << num_of_processors << " logical processors." << endl;
 
-	for (size_t i = 0; i < num_of_processors; ++i) {
+  for (size_t i = 0; i < num_of_threads; ++i) {
 
-		// create a new worker thread and call the calculate_fib_sequence function
-		// handle -> void* address of the thread
-		HANDLE Worker = CreateThread(
-			0,
-			0, // default stack size (1MB), value determines the number of bytes
-			calculate_fib_sequence,
-			&fib_n,
-			0,
-			&thread_ids.at(i)
-		);
+    // create a new worker thread and call the calculate_fib_sequence function
+    // handle -> void* address of the thread
+    HANDLE Worker = CreateThread(
+      0,
+      0, // default stack size (1MB), value determines the number of bytes
+      calculate_fib_sequence,
+      &fib_n,
+      0,
+      &thread_ids.at(i)
+    );
 
-		if (Worker == nullptr) {
-			throw runtime_error(ERROR_CREATING_THREAD + Hlp::ErrMsg(GetLastError()));
-		}
+    if (Worker == nullptr) {
+      for (const HANDLE hThread : worker_threads) {
+        WaitForSingleObject(hThread, INFINITE);
+        if (!CloseHandle(hThread)) {
+          cerr << "CloseHandle failed while cleanup: " << Hlp::ErrMsg(GetLastError());
+        }
+      }
+      throw runtime_error(ERROR_CREATING_THREAD + Hlp::ErrMsg(GetLastError()));
+    }
 
-		worker_threads.emplace_back(move(Worker));
+    worker_threads.emplace_back(Worker);
 
-		cout << "Created thread with ID: " << thread_ids.back() << endl;
-	}
+    cout << "Created thread with ID: " << thread_ids.at(i) << endl;
+  }
 
 
-	// Wait for all worker threads to finish and close their handles
-	for_each(worker_threads.cbegin(), worker_threads.cend(), [](const HANDLE& hThread) {
-		// wait for the thread to finish
-		WaitForSingleObject(hThread, INFINITE);
+  // Wait for all worker threads to finish and close their handles
+  for (const HANDLE hThread : worker_threads) {
 
-		// Return Value of the thread
-		DWORD exitCode = 0;
-		GetExitCodeThread(hThread, &exitCode);
-		if (exitCode != NO_ERROR) {
-			throw runtime_error("Thread Exited with error: " + exitCode + Hlp::ErrMsg(exitCode));
-		}
+    const DWORD waitResult = WaitForSingleObject(hThread, INFINITE);
 
-		CloseHandle(hThread);
-	});
+    if (waitResult == WAIT_FAILED) {
+      cerr << "WaitForSingleObject failed: " << Hlp::ErrMsg(GetLastError());
+    }
+
+    // Return Value of the thread
+    DWORD exitCode = NO_ERROR;
+    if (!GetExitCodeThread(hThread, &exitCode)) {
+      cerr << "GetExitCodeThread failed: " << Hlp::ErrMsg(GetLastError());
+    }
+    else if (exitCode != NO_ERROR) {
+      cerr << "Thread exited with error: " << Hlp::ErrMsg(exitCode);
+    }
+
+    if (!CloseHandle(hThread)) {
+      cerr << "CloseHandle failed: " << Hlp::ErrMsg(GetLastError());
+    }
+  }
 }
 
 
@@ -178,88 +192,103 @@ void PrintFibSequenceMultiThreaded(const size_t max_fib_n) {
  */
 void BenchmarkFib(const size_t max_fib_n) {
 
-	const size_t num_of_processors = std::thread::hardware_concurrency();
-	const size_t min_threads = 4;
-	const size_t num_of_threads = num_of_processors < min_threads ? min_threads : num_of_processors; // Fallback to 4 threads on older systems
-	size_t fib_n = max_fib_n;
+  const size_t num_of_processors = std::thread::hardware_concurrency();
+  const size_t min_threads = 4;
+  const size_t num_of_threads = num_of_processors < min_threads ? min_threads : num_of_processors; // Fallback to 4 threads on older systems
+  size_t fib_n = max_fib_n;
 
-	// vectors to store the handles and thread IDs of the worker threads
-	vector<HANDLE> worker_threads;
-	vector<DWORD> thread_ids(num_of_threads, 0);
-	// reserve space in the vectors to avoid reallocations
-	worker_threads.reserve(num_of_threads);
+  // vectors to store the handles and thread IDs of the worker threads
+  vector<HANDLE> worker_threads;
+  vector<DWORD> thread_ids(num_of_threads, 0);
+  // reserve space in the vectors to avoid reallocations
+  worker_threads.reserve(num_of_threads);
 
 
-	// c)
-	// Calculation of the speedup of the parallelized version compared to a single-threaded version
-	// first calculate k-Times the fib of (n) in a single-threaded version and measure the time
-	// then calculate k-Times the fib of (n) in a multi-threaded version and measure the time
+  // c)
+  // Calculation of the speedup of the parallelized version compared to a single-threaded version
+  // first calculate k-Times the fib of (n) in a single-threaded version and measure the time
+  // then calculate k-Times the fib of (n) in a multi-threaded version and measure the time
 
-	// Single Threaded Version k-Times fib(n)
-	cout << "Calculating fib(" << max_fib_n << ") in a single-threaded version..." << endl;
+  // Single Threaded Version k-Times fib(n)
+  cout << "Calculating fib(" << max_fib_n << ") in a single-threaded version..." << endl;
 
-	// start the stopwatch to measure the time taken for the single-threaded version
-	double single_threaded_time = 0.0;
-	double multi_threaded_time = 0.0;
+  // start the stopwatch to measure the time taken for the single-threaded version
+  double single_threaded_time = 0.0;
+  double multi_threaded_time = 0.0;
 
-	stw::Start();
+  stw::Start();
 
-	for (size_t i = 0; i < num_of_processors; ++i) {
-		cout << "Single Threaded: Iteration " << i << " of " << num_of_processors << " fib(" << max_fib_n << ") = " << fib(max_fib_n) << endl;
-	}
-	single_threaded_time = stw::Stop_ms();
+  for (size_t i = 0; i < num_of_threads; ++i) {
+    cout << "Single Threaded: Iteration " << i << " of " << num_of_threads << " fib(" << max_fib_n << ") = " << fib(max_fib_n) << endl;
+  }
+  single_threaded_time = stw::Stop_ms();
 
-	cout << endl << "Time taken for single-threaded version: " << single_threaded_time << " ms" << endl;
+  cout << endl << "Time taken for single-threaded version: " << single_threaded_time << " ms" << endl;
 
-	// Multi Threaded Version k-Times fib(n)
+  // Multi Threaded Version k-Times fib(n)
 
-	cout << "Calculating fib(" << max_fib_n << ") in a multi-threaded version..." << endl;
+  cout << "Calculating fib(" << max_fib_n << ") in a multi-threaded version..." << endl;
 
-	stw::Start();
+  stw::Start();
 
-	for (size_t i = 0; i < num_of_processors; ++i) {
+  for (size_t i = 0; i < num_of_threads; ++i) {
 
-		// create a new worker thread and call the calculate_fib function
-		// handle -> void* address of the thread
-		HANDLE Worker = CreateThread(
-			0,
-			0, // default stack size (1MB), value determines the number of bytes
-			calculate_fib,
-			&fib_n,
-			0,
-			&thread_ids.at(i)
-		);
+    // create a new worker thread and call the calculate_fib function
+    // handle -> void* address of the thread
+    HANDLE Worker = CreateThread(
+      0,
+      0, // default stack size (1MB), value determines the number of bytes
+      calculate_fib,
+      &fib_n,
+      0,
+      &thread_ids.at(i)
+    );
 
-		if(Worker == nullptr) {
-			throw runtime_error(ERROR_CREATING_THREAD + Hlp::ErrMsg(GetLastError()));
-		}
+    if(Worker == nullptr) {
+      for (HANDLE hThread : worker_threads) {
 
-		worker_threads.emplace_back(move(Worker));
-	}
+        WaitForSingleObject(hThread, INFINITE);
 
-	// Wait for all worker threads to finish and close their handles
-	for_each(worker_threads.cbegin(), worker_threads.cend(), [](const HANDLE& hThread) {
-		WaitForSingleObject(hThread, INFINITE);
+        if (!CloseHandle(hThread)) {
+          cerr << "CloseHandle failed while cleanup: " << Hlp::ErrMsg(GetLastError());
+        }
+      }
+      throw runtime_error(ERROR_CREATING_THREAD + Hlp::ErrMsg(GetLastError()));
+    }
 
-		// Return Value of the thread
-		DWORD exitCode = 0;
-		GetExitCodeThread(hThread, &exitCode);
-		if (exitCode != NO_ERROR) {
-			throw runtime_error("Thread Exited with error: " + exitCode + Hlp::ErrMsg(exitCode));
-		}
+    worker_threads.emplace_back(Worker);
+  }
 
-		CloseHandle(hThread);
-	});
+  // Wait for all worker threads to finish and close their handles
+  for (HANDLE hThread : worker_threads) {
+    const DWORD waitResult = WaitForSingleObject(hThread, INFINITE);
+    if (waitResult == WAIT_FAILED) {
+      cerr << "WaitForSingleObject failed: " << Hlp::ErrMsg(GetLastError());
+    }
 
-	multi_threaded_time = stw::Stop_ms();
+    // Return Value of the thread
+    DWORD exitCode = NO_ERROR;
+    if (!GetExitCodeThread(hThread, &exitCode)) {
+      cerr << "GetExitCodeThread failed: " << Hlp::ErrMsg(GetLastError());
+    }
+    else if (exitCode != NO_ERROR) {
+      cerr << "Thread exited with error: " << Hlp::ErrMsg(exitCode);
+    }
 
-	cout << endl << "Time taken for multi-threaded version: " << multi_threaded_time << " ms" << endl;
+    if (!CloseHandle(hThread)) {
+      cerr << "CloseHandle failed: " << Hlp::ErrMsg(GetLastError());
+    }
+  }
 
-	if (multi_threaded_time > 0) {
-		cout << endl << "Speedup: " << single_threaded_time / multi_threaded_time << "x" << endl << endl;
-	}
-	else {
-		cerr << "Multi-threaded time is zero, cannot calculate speedup." << endl;
-	}
+  multi_threaded_time = stw::Stop_ms();
+
+  cout << endl << "Time taken for multi-threaded version: " << multi_threaded_time << " ms" << endl;
+
+  if (multi_threaded_time > 0) {
+    cout << endl << "Speedup: " << single_threaded_time / multi_threaded_time << "x" << endl << endl;
+  }
+  else {
+    cerr << "Multi-threaded time is zero, cannot calculate speedup." << endl;
+  }
 }
 

@@ -73,14 +73,14 @@ public:
      *
      * The multiplication implementation uses one worker thread per result cell.
      */
-	Matrix operator*(Matrix const & other) const;
+    Matrix operator*(Matrix const & other) const;
 
-	/**
-	 * @brief Equality operator for matrices.
-	 * @param other Matrix to compare with.
-	 * @return true if all cells are equal, false otherwise.
-	 */
-	bool operator==(Matrix const& other) const;
+    /**
+     * @brief Equality operator for matrices.
+     * @param other Matrix to compare with.
+     * @return true if all cells are equal, false otherwise.
+     */
+    bool operator==(Matrix const& other) const;
 
     /**
      * @brief Print matrix to the given output stream in a human readable form.

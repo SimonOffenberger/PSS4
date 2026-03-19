@@ -211,8 +211,8 @@ void BenchmarkFib(const size_t max_fib_n) {
 
 	stw::Start();
 
-	for (size_t i = 0; i < num_of_processors; ++i) {
-		cout << "Single Threaded: Iteration " << i << " of " << num_of_processors << " fib(" << max_fib_n << ") = " << fib(max_fib_n) << endl;
+	for (size_t i = 0; i < num_of_threads; ++i) {
+		cout << "Single Threaded: Iteration " << i << " of " << num_of_threads << " fib(" << max_fib_n << ") = " << fib(max_fib_n) << endl;
 	}
 	single_threaded_time = stw::Stop_ms();
 
@@ -224,7 +224,7 @@ void BenchmarkFib(const size_t max_fib_n) {
 
 	stw::Start();
 
-	for (size_t i = 0; i < num_of_processors; ++i) {
+	for (size_t i = 0; i < num_of_threads; ++i) {
 
 		// create a new worker thread and call the calculate_fib function
 		// handle -> void* address of the thread
@@ -238,25 +238,40 @@ void BenchmarkFib(const size_t max_fib_n) {
 		);
 
 		if(Worker == nullptr) {
+			for (const HANDLE hThread : worker_threads) {
+
+				WaitForSingleObject(hThread, INFINITE);
+
+				if (!CloseHandle(hThread)) {
+					cerr << "CloseHandle failed while cleanup: " << Hlp::ErrMsg(GetLastError());
+				}
+			}
 			throw runtime_error(ERROR_CREATING_THREAD + Hlp::ErrMsg(GetLastError()));
 		}
 
-		worker_threads.emplace_back(move(Worker));
+		worker_threads.emplace_back(Worker);
 	}
 
 	// Wait for all worker threads to finish and close their handles
-	for_each(worker_threads.cbegin(), worker_threads.cend(), [](const HANDLE& hThread) {
-		WaitForSingleObject(hThread, INFINITE);
-
-		// Return Value of the thread
-		DWORD exitCode = 0;
-		GetExitCodeThread(hThread, &exitCode);
-		if (exitCode != NO_ERROR) {
-			throw runtime_error("Thread Exited with error: " + exitCode + Hlp::ErrMsg(exitCode));
+	for (const HANDLE hThread : worker_threads) {
+		const DWORD waitResult = WaitForSingleObject(hThread, INFINITE);
+		if (waitResult == WAIT_FAILED) {
+			cerr << "WaitForSingleObject failed: " << Hlp::ErrMsg(GetLastError());
 		}
 
-		CloseHandle(hThread);
-	});
+		// Return Value of the thread
+		DWORD exitCode = NO_ERROR;
+		if (!GetExitCodeThread(hThread, &exitCode)) {
+			cerr << "GetExitCodeThread failed: " << Hlp::ErrMsg(GetLastError());
+		}
+		else if (exitCode != NO_ERROR) {
+			cerr << "Thread exited with error: " << Hlp::ErrMsg(exitCode);
+		}
+
+		if (!CloseHandle(hThread)) {
+			cerr << "CloseHandle failed: " << Hlp::ErrMsg(GetLastError());
+		}
+	}
 
 	multi_threaded_time = stw::Stop_ms();
 

@@ -13,6 +13,7 @@
 #include "Matrix.h"
 #include "windows.h"
 #include "Hlp.h"
+#include <iostream>
 
 using namespace std;
 
@@ -28,11 +29,11 @@ void Matrix::Init(double const & val) {
 
 // structure to pass the parameters for the cell multiplication task to the worker thread
 typedef struct {
-	const Matrix* pMatrixA;
+    const Matrix* pMatrixA;
     const Matrix* pMatrixB;
-	Matrix* pResultMatrix;
-	size_t row;
-	size_t col;
+    Matrix* pResultMatrix;
+    size_t row;
+    size_t col;
 }TCellTask ;
 
 /**
@@ -59,29 +60,29 @@ DWORD WINAPI Matrix_Cell_Mul(LPVOID ptask) {
 
 Matrix Matrix::operator*(Matrix const & other) const
 {
-	// result matrix
+    // result matrix
     Matrix result;    
     const size_t num_threads = n * n;
     
-	// vectors to store the tasks, handles and thread IDs of the worker threads
+    // vectors to store the tasks, handles and thread IDs of the worker threads
     std::vector<TCellTask> tasks;
     std::vector<HANDLE> worker_threads;
     std::vector<DWORD> thread_ids(num_threads, 0);
-	
-	// reserve space in the vectors to avoid reallocations
+    
+    // reserve space in the vectors to avoid reallocations
     tasks.reserve(num_threads);
     worker_threads.reserve(num_threads);
 
     size_t idx = 0;
 
-	// Start a worker thread for each cell in the result matrix
+    // Start a worker thread for each cell in the result matrix
     for (size_t row = 0; row < n; ++row) {
         for (size_t col = 0; col < n; ++col) {
 
-			// Fill the task structure with the parameters for the cell multiplication
-			TCellTask task{ this, &other, &result, row, col };
+            // Fill the task structure with the parameters for the cell multiplication
+            TCellTask task{ this, &other, &result, row, col };
 
-			// Store the task in the vector and start a worker thread to execute the cell multiplication
+            // Store the task in the vector and start a worker thread to execute the cell multiplication
             tasks.emplace_back(move(task));
 
             HANDLE Worker = CreateThread(
@@ -93,34 +94,46 @@ Matrix Matrix::operator*(Matrix const & other) const
                 &thread_ids.at(idx)
             );
 
-			// check if the thread was created successfully
+            // check if the thread was created successfully
             if(Worker == nullptr) {
+                // close handles of already created threads before throwing the exception
+                for (HANDLE hThread : worker_threads) {
+                    WaitForSingleObject(hThread, INFINITE);
+                    CloseHandle(hThread);
+                }
                 throw runtime_error(ERROR_CREATING_THREAD + Hlp::ErrMsg(GetLastError()));
-			}
+            }
 
-			// Store the handle of the worker thread in the vector
+            // Store the handle of the worker thread in the vector
             worker_threads.emplace_back(Worker);
 
             ++idx;
         }
     }
 
-	// Wait for all worker threads to finish and close their handles
-    for_each(worker_threads.cbegin(), worker_threads.cend(), [](const HANDLE& hThread) {
-        WaitForSingleObject(hThread, INFINITE);
-
-        // Return Value of the thread
-        DWORD exitCode = 0;
-        GetExitCodeThread(hThread, &exitCode);
-        if (exitCode != NO_ERROR) {
-            throw runtime_error("Thread Exited with error: " + exitCode + Hlp::ErrMsg(exitCode));
+    // Wait for all worker threads to finish and close their handles
+    for (const HANDLE hThread : worker_threads) {
+        const DWORD waitResult = WaitForSingleObject(hThread, INFINITE);
+        if (waitResult == WAIT_FAILED) {
+            cerr << "WaitForSingleObject failed: " << Hlp::ErrMsg(GetLastError());
         }
 
-        CloseHandle(hThread);
-    });
+        // Return Value of the thread
+        DWORD exitCode = NO_ERROR;
+        if (!GetExitCodeThread(hThread, &exitCode)) {
+            cerr << "GetExitCodeThread failed: " << Hlp::ErrMsg(GetLastError());
+        }
+        else if (exitCode != NO_ERROR) {
+            cerr << "Thread exited with error: " << Hlp::ErrMsg(exitCode);
+        }
 
-	// Return the result matrix (RVO / move)
-    return move(result);
+        if (!CloseHandle(hThread)) {
+            cerr << "CloseHandle failed: " << Hlp::ErrMsg(GetLastError());
+        }
+    }
+
+    // Return the result matrix (RVO / move)
+    return result;
 }
 
 bool Matrix::operator==(Matrix const& other) const
@@ -132,7 +145,7 @@ bool Matrix::operator==(Matrix const& other) const
                 return false;
             }
         }
-	}
+    }
 
     return true;
 }
@@ -142,7 +155,7 @@ void Matrix::Print(std::ostream & ost) const {
 
     if(!ost.good()) {
         throw std::invalid_argument(ERROR_BAD_OSTREAM);
-	}
+    }
 
     ost << std::endl;
 

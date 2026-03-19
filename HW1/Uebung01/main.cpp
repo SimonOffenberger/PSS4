@@ -29,10 +29,10 @@ int main(void){
     }
 
     try {
-		bool TestOK = true; 
+        bool TestOK = true; 
 
-	    PrintFibSequenceMultiThreaded(30);
-	    BenchmarkFib(33);
+        PrintFibSequenceMultiThreaded(30);
+        BenchmarkFib(33);
 
         TestOK = TestOK && Test_Matrix_Multiplication(cout);
 
@@ -114,28 +114,28 @@ static bool Test_Matrix_Multiplication(std::ostream& ost)
         A->Init(0);
         B->Init(5);
 
-		// create identity matrix in A
+        // create identity matrix in A
         for(size_t i= 0; i < Matrix::n; ++i) {
             A->GetMatrix()[i][i] = 1;
-		}
+        }
 
         *C = (*A) * (*B);
-		TestOK = TestOK && check_dump(ost, "Test for Matrix Multiplication with Identity Matrix", *B, *C);
+        TestOK = TestOK && check_dump(ost, "Test for Matrix Multiplication with Identity Matrix", *B, *C);
 
         A->Init(0);
         B->Init(5);
 
-		// create identity matrix in A
+        // create identity matrix in A
         for(size_t i= 0; i < Matrix::n; ++i) {
             A->GetMatrix()[i][i] = -1;
-		}
+        }
 
         *C = (*A) * (*B);
         
-		unique_ptr<Matrix> expected = make_unique<Matrix>();
-		expected->Init(-5);
+        unique_ptr<Matrix> expected = make_unique<Matrix>();
+        expected->Init(-5);
 
-		TestOK = TestOK && check_dump(ost, "Test for Matrix Multiplication with negative Identity Matrix", *expected, *C);
+        TestOK = TestOK && check_dump(ost, "Test for Matrix Multiplication with negative Identity Matrix", *expected, *C);
 
 
         A->GetMatrix()[0][0] = 1;
@@ -168,23 +168,23 @@ static bool Test_Matrix_Multiplication(std::ostream& ost)
         expected->GetMatrix()[2][1] = 2;
         expected->GetMatrix()[2][2] = -8;
 
-		*C = (*A) * (*B);
+        *C = (*A) * (*B);
 
-		TestOK = TestOK && check_dump(ost, "Test for Matrix Multiplication with provided Example", *expected, *C);
+        TestOK = TestOK && check_dump(ost, "Test for Matrix Multiplication with provided Example", *expected, *C);
 
-		A->Init(2);
-		B->Init(3);
+        A->Init(2);
+        B->Init(3);
 
-		*C = (*A) * (*B);
+        *C = (*A) * (*B);
 
-		// each element of C should be 2*3*Matrix::n because each row of 
+        // each element of C should be 2*3*Matrix::n because each row of 
         // A has n elements with value 2 and each column of B has n elements with value 3
-		expected->Init(2 * 3 * Matrix::n);
+        expected->Init(2 * 3 * Matrix::n);
 
-		TestOK = TestOK && check_dump(ost, "Test for Matrix Multiplication with uniformly initialized matrices", *expected, *C);
+        TestOK = TestOK && check_dump(ost, "Test for Matrix Multiplication with uniformly initialized matrices", *expected, *C);
 
-	}
-	catch (const string& err) {
+    }
+    catch (const string& err) {
         error_msg = err;
     }
     catch (bad_alloc const& error) {
@@ -203,12 +203,12 @@ static bool Test_Matrix_Multiplication(std::ostream& ost)
     try
     {
         stringstream bad_stream;
-		bad_stream.setstate(ios::failbit); // make the stream bad
+        bad_stream.setstate(ios::failbit); // make the stream bad
         unique_ptr<Matrix> A = make_unique<Matrix>();
        
-		bad_stream << *A; // This should fail and throw an exception
-	}
-	catch (const string& err) {
+        bad_stream << *A; // This should fail and throw an exception
+    }
+    catch (const string& err) {
         error_msg = err;
     }
     catch (bad_alloc const& error) {
