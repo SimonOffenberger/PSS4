@@ -155,20 +155,6 @@ void Matrix::Print(std::ostream & ost) const {
 }
 
 
-// print the matrix as comma separated values file (readable by MS Excel)
-void Matrix::PrintAsCSVFile() const {
-    std::ofstream out("MatrixTempResult.csv");
-    assert(out.good()); // check if file could be opened/created
-
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            out << static_cast<int>(mMatrix[i][j]) << ";";
-        }
-        out << std::endl;
-    }
-    out.close();
-}
-
 std::ostream& operator<<(std::ostream& ost, const Matrix& M)
 {
     if (!ost.good()) {

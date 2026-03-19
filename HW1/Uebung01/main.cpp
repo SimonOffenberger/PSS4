@@ -11,6 +11,7 @@
 #include "Test.hpp"
 #include <memory>
 #include <cassert>
+#include <sstream>
 #include "vld.h"
 
 using namespace std;
@@ -30,8 +31,8 @@ int main(void){
     try {
 		bool TestOK = true; 
 
-	    PrintFibSequenceMultiThreaded(40);
-	    BenchmarkFib(43);
+	    PrintFibSequenceMultiThreaded(30);
+	    BenchmarkFib(33);
 
         TestOK = TestOK && Test_Matrix_Multiplication(cout);
 
@@ -87,7 +88,7 @@ int main(void){
  *  - multiplication with an identity matrix
  *  - checks for exceptions
  */
-bool Test_Matrix_Multiplication(std::ostream& ost)
+static bool Test_Matrix_Multiplication(std::ostream& ost)
 {
     assert(ost.good());
 
@@ -167,12 +168,23 @@ bool Test_Matrix_Multiplication(std::ostream& ost)
         expected->GetMatrix()[2][1] = 2;
         expected->GetMatrix()[2][2] = -8;
 
-        *C = (*A) * (*B);
+		*C = (*A) * (*B);
 
 		TestOK = TestOK && check_dump(ost, "Test for Matrix Multiplication with provided Example", *expected, *C);
 
-    }
-    catch (const string& err) {
+		A->Init(2);
+		B->Init(3);
+
+		*C = (*A) * (*B);
+
+		// each element of C should be 2*3*Matrix::n because each row of 
+        // A has n elements with value 2 and each column of B has n elements with value 3
+		expected->Init(2 * 3 * Matrix::n);
+
+		TestOK = TestOK && check_dump(ost, "Test for Matrix Multiplication with uniformly initialized matrices", *expected, *C);
+
+	}
+	catch (const string& err) {
         error_msg = err;
     }
     catch (bad_alloc const& error) {
@@ -186,6 +198,30 @@ bool Test_Matrix_Multiplication(std::ostream& ost)
     }
 
     TestOK = TestOK && check_dump(ost, "Test for Exception in TestCase", true , error_msg.empty());
+    error_msg.clear();
+    
+    try
+    {
+        stringstream bad_stream;
+		bad_stream.setstate(ios::failbit); // make the stream bad
+        unique_ptr<Matrix> A = make_unique<Matrix>();
+       
+		bad_stream << *A; // This should fail and throw an exception
+	}
+	catch (const string& err) {
+        error_msg = err;
+    }
+    catch (bad_alloc const& error) {
+        error_msg = error.what();
+    }
+    catch (const exception& err) {
+        error_msg = err.what();
+    }
+    catch (...) {
+        error_msg = "Unhandelt Exception";
+    }
+
+    TestOK = TestOK && check_dump(ost, "Test for Exception in output operator", Matrix::ERROR_BAD_OSTREAM, error_msg);
     error_msg.clear();
 
 

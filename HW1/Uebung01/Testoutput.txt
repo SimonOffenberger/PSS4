@@ -47,8 +47,22 @@ Test for Matrix Multiplication with provided Example
 12  2  -8  
 )
 
+Test for Matrix Multiplication with uniformly initialized matrices
+[Test OK] Result: (Expected: 
+18  18  18  
+18  18  18  
+18  18  18  
+ == Result: 
+18  18  18  
+18  18  18  
+18  18  18  
+)
+
 Test for Exception in TestCase
 [Test OK] Result: (Expected: true == Result: true)
+
+Test for Exception in output operator
+[Test OK] Result: (Expected: Error Ostream is bad! == Result: Error Ostream is bad!)
 
 
 *******************************************

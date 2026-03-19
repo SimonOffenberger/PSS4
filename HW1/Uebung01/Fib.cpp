@@ -31,7 +31,7 @@ const string ERROR_CREATING_THREAD = "Failed to create thread: ";
  * @param n Input index to fib().
  * @param fib Result of fib(n).
  */
-void Print_Fib(size_t n, size_t fib) {
+void Print_Fib(const size_t n,const size_t fib) {
 	std::cout.flush();
 	std::cout << "WorkerThread " << std::this_thread::get_id();
 	std::cout << ": Result of fib(" << n << ") = " << fib << std::endl;
@@ -46,7 +46,7 @@ void Print_Fib(size_t n, size_t fib) {
  * @param n Fibonacci index.
  * @return fib(n).
  */
-size_t fib(size_t n) {
+size_t fib(const size_t n) {
 
 	if (n <= 1) return n;
 

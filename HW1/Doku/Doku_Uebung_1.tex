@@ -93,7 +93,7 @@ Da alle Threads gleichzeitig auf die Konsole zugreifen, kann es zu einer Vermisc
  * @param n Input index to fib().
  * @param fib Result of fib(n).
  */
-void Print_Fib(size_t n, size_t fib) {
+void Print_Fib(const size_t n,const size_t fib) {
 	std::cout.flush();
 	std::cout << "WorkerThread " << std::this_thread::get_id();
 	Sleep(0);
@@ -144,7 +144,7 @@ Die Reihenfolge der Ausgabe ändert sich jedes Mal, wenn das Programm ausgeführ
  * @param n Fibonacci index.
  * @return fib(n).
  */
-size_t fib(size_t n) {
+size_t fib(const size_t n) {
 
 	if (n <= 1) return n;
 
@@ -183,11 +183,12 @@ DWORD WINAPI calculate_fib(LPVOID n) {
  *
  * @param max_fib_n Fibonacci index to compute in benchmarks.
  */
-void BenchmarkFib(size_t max_fib_n) {
+void BenchmarkFib(const size_t max_fib_n) {
 
 	const size_t num_of_processors = std::thread::hardware_concurrency();
 	const size_t min_threads = 4;
 	const size_t num_of_threads = num_of_processors < min_threads ? min_threads : num_of_processors; // Fallback to 4 threads on older systems
+	size_t fib_n = max_fib_n;
 
 	// vectors to store the handles and thread IDs of the worker threads
 	vector<HANDLE> worker_threads;
@@ -231,7 +232,7 @@ void BenchmarkFib(size_t max_fib_n) {
 			0,
 			0, // default stack size (1MB), value determines the number of bytes
 			calculate_fib,
-			&max_fib_n,
+			&fib_n,
 			0,
 			&thread_ids.at(i)
 		);
@@ -246,6 +247,14 @@ void BenchmarkFib(size_t max_fib_n) {
 	// Wait for all worker threads to finish and close their handles
 	for_each(worker_threads.cbegin(), worker_threads.cend(), [](const HANDLE& hThread) {
 		WaitForSingleObject(hThread, INFINITE);
+
+		// Return Value of the thread
+		DWORD exitCode = 0;
+		GetExitCodeThread(hThread, &exitCode);
+		if (exitCode != NO_ERROR) {
+			throw runtime_error("Thread Exited with error: " + exitCode + Hlp::ErrMsg(exitCode));
+		}
+
 		CloseHandle(hThread);
 	});
 
@@ -253,7 +262,12 @@ void BenchmarkFib(size_t max_fib_n) {
 
 	cout << endl << "Time taken for multi-threaded version: " << multi_threaded_time << " ms" << endl;
 
-	cout << endl << "Speedup: " << single_threaded_time / multi_threaded_time << "x" << endl<< endl;
+	if (multi_threaded_time > 0) {
+		cout << endl << "Speedup: " << single_threaded_time / multi_threaded_time << "x" << endl << endl;
+	}
+	else {
+		cerr << "Multi-threaded time is zero, cannot calculate speedup." << endl;
+	}
 }
 \end{lstlisting}
 

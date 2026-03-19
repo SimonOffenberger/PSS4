@@ -89,11 +89,6 @@ public:
      */
     void Print(std::ostream & ost) const;
 
-    /**
-     * @brief Write matrix as a CSV file ("MatrixTempResult.csv").
-     *        Values are separated with ';' to be Excel-friendly.
-     */
-    void PrintAsCSVFile() const;
 
 private:
     TMatrix mMatrix = { 0 };    // the matrix
