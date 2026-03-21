@@ -1,0 +1,8 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="AdminTool/AdminTool.vcxproj" Id="52277df8-0111-41cc-86c4-aeebc6e447ea" />
+  <Project Path="HW2.vcxproj" Id="66e503f3-e128-48be-af68-1214cc9ffcca" />
+</Solution>

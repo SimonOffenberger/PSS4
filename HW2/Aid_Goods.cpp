@@ -1,0 +1,1 @@
+#include "Aid_Goods.hpp"
