@@ -19,18 +19,18 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Aid_Goods.cpp" />
-    <ClCompile Include="Goods.cpp" />
-    <ClCompile Include="LKW.cpp" />
+    <ClCompile Include="Logistics\Aid_Goods.cpp" />
+    <ClCompile Include="Logistics\Goods.cpp" />
+    <ClCompile Include="Logistics\LKW.cpp" />
     <ClCompile Include="Logistics\optimierung.cpp" />
-    <ClCompile Include="Vehilce.cpp" />
+    <ClCompile Include="Logistics\Vehilce.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Aid_Goods.hpp" />
-    <ClInclude Include="Goods.hpp" />
-    <ClInclude Include="LKW.hpp" />
-    <ClInclude Include="Object.hpp" />
-    <ClInclude Include="Vehicle.hpp" />
+    <ClInclude Include="Logistics\Aid_Goods.hpp" />
+    <ClInclude Include="Logistics\Goods.hpp" />
+    <ClInclude Include="Logistics\LKW.hpp" />
+    <ClInclude Include="Logistics\Object.hpp" />
+    <ClInclude Include="Logistics\Vehicle.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>

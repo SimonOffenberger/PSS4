@@ -18,33 +18,33 @@
     <ClCompile Include="Logistics\optimierung.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Vehilce.cpp">
+    <ClCompile Include="Logistics\Aid_Goods.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Goods.cpp">
+    <ClCompile Include="Logistics\Goods.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Aid_Goods.cpp">
+    <ClCompile Include="Logistics\LKW.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="LKW.cpp">
+    <ClCompile Include="Logistics\Vehilce.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Object.hpp">
+    <ClInclude Include="Logistics\Aid_Goods.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Vehicle.hpp">
+    <ClInclude Include="Logistics\Goods.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Goods.hpp">
+    <ClInclude Include="Logistics\LKW.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Aid_Goods.hpp">
+    <ClInclude Include="Logistics\Object.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="LKW.hpp">
+    <ClInclude Include="Logistics\Vehicle.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
