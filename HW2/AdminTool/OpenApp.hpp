@@ -6,17 +6,27 @@
 
 #include <string>
 
+#include <iostream>
+
 class OpenApp : public Command, public Object
 {
 public:
-    OpenApp(const std::string & app);
+	OpenApp(std::istream& ins, std::ostream& out) : in{ ins }, ost{out} {}
 
 	virtual void Execute() override;
 
 	virtual std::string GetCmdName() const override;
 
+	virtual std::string GetCmdIdentifier() const override;
+
+
 private:
-	std::string mApp;
+
+	std::istream & in;
+	std::ostream & ost;
+
+	inline static const std::string CMD_IDENTIFIER = "exec";
+
 };
 
 #endif

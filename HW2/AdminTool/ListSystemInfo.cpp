@@ -129,6 +129,12 @@ void ListSystemInfo::PrintSoftwareInfo()
 
 std::string ListSystemInfo::GetCmdName() const
 {
-	return "List System Information";
+	return ListSystemInfo::CMD_IDENTIFIER + " -> List System Information";
 }
+
+std::string ListSystemInfo::GetCmdIdentifier() const
+{
+    return ListSystemInfo::CMD_IDENTIFIER;
+}
+
 

@@ -5,6 +5,7 @@
 #include "ListSystemInfo.hpp"
 #include "vld.h"
 #include "ListApps.hpp"
+#include "Menu.hpp"
 #include <iostream>
 #include <conio.h>
 
@@ -12,25 +13,22 @@
 int main(void)
 {
 
-	ListSystemInfo listSystemInfo{ std::cout };
 
-	listSystemInfo.Execute();
+	Menu menu;
+	menu.AddCommand(std::move(std::make_unique<ListApps>(std::cout)));
+	menu.AddCommand(std::move(std::make_unique<TerminateApp>(120)));
+	menu.AddCommand(std::move(std::make_unique<OpenApp>(std::cin,std::cout)));
+	menu.AddCommand(std::move(std::make_unique<ListSystemInfo>(std::cout)));
 
-	ListApps listApps{std::cout};
+	menu.ShowMenu(std::cout);
 
-	listApps.Execute();
+	std::string input = "";
 
-	OpenApp openApp("mspaint");
-
-	openApp.Execute();
-
-	DWORD appId = 0;
-
-	std::cin >> appId;
-
-	TerminateApp terminateApp(appId);
-
-	terminateApp.Execute();
+	while (true) {
+		std::cout << ">";
+		std::cin >> input;
+		menu.ExecuteCommand(input);
+	}
 
 	_getch();
 

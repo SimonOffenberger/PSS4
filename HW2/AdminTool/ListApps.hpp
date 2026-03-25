@@ -16,6 +16,9 @@ public:
 
 	virtual std::string GetCmdName() const override;
 
+	virtual std::string GetCmdIdentifier() const override;
+
+
 private:
 
 	void PrintProcessInfo(const PROCESSENTRY32 & entry) const;
@@ -29,7 +32,7 @@ private:
 	inline static const size_t cProcessPIDWidth = 10;
 	inline static const size_t cProcessCntTHWidth = 15;
 
-
+	inline static const std::string CMD_IDENTIFIER = "lsa";
 };
 
 #endif

@@ -14,7 +14,14 @@ public:
 
 	virtual std::string GetCmdName() const override;
 
+	virtual std::string GetCmdIdentifier() const override;
+
+
 private:
+
+	inline static const std::string CMD_IDENTIFIER = "term";
+
+
 	DWORD mApp;
 };
 

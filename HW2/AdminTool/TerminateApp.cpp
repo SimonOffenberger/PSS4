@@ -1,4 +1,5 @@
 #include "TerminateApp.hpp"
+#include <sstream>
 
 TerminateApp::TerminateApp(const DWORD app)
 {
@@ -14,5 +15,18 @@ void TerminateApp::Execute()
 
 std::string TerminateApp::GetCmdName() const
 {
-	return "Terminate Application : " + mApp;
+
+	std::stringstream converter;
+
+	converter << TerminateApp::CMD_IDENTIFIER;
+	converter << " -> Terminate Application PID: ";
+	converter << mApp;
+
+	return converter.str();
 }
+
+std::string TerminateApp::GetCmdIdentifier() const
+{
+	return TerminateApp::CMD_IDENTIFIER;
+}
+

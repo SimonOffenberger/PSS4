@@ -25,8 +25,14 @@ void ListApps::Execute()
 
 std::string ListApps::GetCmdName() const
 {
-	return "List Applications";
+	return ListApps::CMD_IDENTIFIER + " -> List Applications";
 }
+
+std::string ListApps::GetCmdIdentifier() const
+{
+	return ListApps::CMD_IDENTIFIER;
+}
+
 
 static const char* PriorityToString(LONG priority)
 {

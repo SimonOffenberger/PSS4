@@ -16,12 +16,16 @@ public:
 
 	virtual std::string GetCmdName() const override;
 
+	virtual std::string GetCmdIdentifier() const override;
+
 private:
 
 	void PrintSoftwareInfo();
 	void PrintHardwareInfo();
 
 	std::ostream& mOst;
+
+	inline static const std::string CMD_IDENTIFIER = "lss";
 };
 
 #endif

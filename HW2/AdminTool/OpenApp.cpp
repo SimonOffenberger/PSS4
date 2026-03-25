@@ -11,14 +11,13 @@
 #include "Hlp.h"
 #include <iostream>
 
-OpenApp::OpenApp(const std::string& app)
-{
-	mApp = app;
-}
 
 void OpenApp::Execute()
 {
 	// parameters for creating a new process
+	ost << "Enter the name of the application to open (e.g. mspaint): " << std::endl << "<";
+	std::string app;
+	in >> app;
 
 	STARTUPINFO si; // specifies how the main window should appear [in]
 	PROCESS_INFORMATION pi; // filled by CreateProcess with information about 
@@ -35,7 +34,7 @@ void OpenApp::Execute()
 	// start the new process
 	if (!CreateProcess(
 		0,		    // no module name, use command line
-		(LPSTR)mApp.c_str(),  // command line
+		(LPSTR)app.c_str(),  // command line
 		0,		    // no process security attribute
 		0,		    // no thread security attribute
 		false,      // no inheritance
@@ -50,10 +49,15 @@ void OpenApp::Execute()
 
 	CloseHandle(pi.hProcess);
 	CloseHandle(pi.hThread);
-
 }
 
 std::string OpenApp::GetCmdName() const
 {
-	return "Open Application : " + mApp;
+	return OpenApp::CMD_IDENTIFIER + " -> Open Application";
 }
+
+std::string OpenApp::GetCmdIdentifier() const
+{
+	return OpenApp::CMD_IDENTIFIER;
+}
+
