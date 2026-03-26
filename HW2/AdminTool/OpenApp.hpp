@@ -8,24 +8,43 @@
 
 #include <iostream>
 
+/**
+ * @brief Command to open an external application.
+ */
 class OpenApp : public Command, public Object
 {
 public:
-	OpenApp(std::istream& ins, std::ostream& out) : in{ ins }, ost{out} {}
 
-	virtual void Execute() override;
+	inline static constexpr const char* ERROR_CREATE_PROCESS_FAILED = "Failed to create process. Error: ";
 
+
+	/**
+	 * @brief Default constructor.
+	 */
+	OpenApp() = default;
+
+	/**
+	 * @brief Executes the open application command.
+	 * @param cmdArg The application name or path to execute.
+	 */
+	virtual void Execute(const std::string& cmdArg) override;
+
+	/**
+	 * @brief Gets the command name and usage.
+	 * @return Command name and usage string.
+	 */
 	virtual std::string GetCmdName() const override;
 
+	/**
+	 * @brief Gets the command identifier.
+	 * @return The identifier string.
+	 */
 	virtual std::string GetCmdIdentifier() const override;
 
 
 private:
 
-	std::istream & in;
-	std::ostream & ost;
-
-	inline static const std::string CMD_IDENTIFIER = "exec";
+	inline static constexpr const char* CMD_IDENTIFIER = "exec";
 
 };
 

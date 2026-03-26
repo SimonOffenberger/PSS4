@@ -1,15 +1,25 @@
 #include <iomanip>
+/**
+ * @file ListApps.cpp
+ * @brief Implementation of the ListApps command.
+ */
+
 #include "ListApps.hpp"
 #include "windows.h"
 #include <iostream>
 
 
-void ListApps::Execute()
+void ListApps::Execute(const std::string& cmdArg)
 {
 	HANDLE hProcessSnap;
 	PROCESSENTRY32 entry;
 
 	hProcessSnap = CreateToolhelp32Snapshot(TH32CS_SNAPALL,NULL);
+
+	if(hProcessSnap == INVALID_HANDLE_VALUE)
+	{
+		throw  std::invalid_argument( ERROR_SNAPSHOT_FAILED + GetLastError());
+	}
 
 	PrintHeader();
 
@@ -25,7 +35,7 @@ void ListApps::Execute()
 
 std::string ListApps::GetCmdName() const
 {
-	return ListApps::CMD_IDENTIFIER + " -> List Applications";
+	return std::string(ListApps::CMD_IDENTIFIER) + " -> List Applications (Usage: lsa)";
 }
 
 std::string ListApps::GetCmdIdentifier() const
@@ -34,15 +44,19 @@ std::string ListApps::GetCmdIdentifier() const
 }
 
 
-static const char* PriorityToString(LONG priority)
+static const char* PriorityToString(const LONG priority)
 {
-	if (priority <= 4)  return "low";
-	if (priority >= 10) return "high";
+	if (priority <= ListApps::cLowPrioThreshold)  return "low";
+	if (priority >= ListApps::cHighPrioThreshold) return "high";
 	return "normal";
 }
 
 void ListApps::PrintHeader() const
 {
+	if (mOst.bad()) {
+		throw std::runtime_error(ERROR_BAD_OSTREAM);
+	}
+
 	mOst << std::left
 		<< std::setw(cProcessNameWidth) << "Process"
 		<< std::setw(cProcessPIDWidth) << "PID"
@@ -55,6 +69,10 @@ void ListApps::PrintHeader() const
 
 void ListApps::PrintProcessInfo(const PROCESSENTRY32& entry) const
 {
+	if (mOst.bad()) {
+		throw std::runtime_error(ERROR_BAD_OSTREAM);
+	}
+
 	mOst << std::left
 		<< std::setw(cProcessNameWidth) << entry.szExeFile
 		<< std::setw(cProcessPIDWidth) << entry.th32ProcessID

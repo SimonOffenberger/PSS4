@@ -1,0 +1,429 @@
+Test Cmd Identifier
+[Test OK] Result: (Expected: lsa == Result: lsa)
+
+--------------------------
+Executing ListApps Command...
+Process                                 PID       BasePriority   Thread Count   
+--------------------------------------------------------------------------------
+[System Process]                        0         low            60             
+System                                  4         normal         518            
+Secure System                           284       normal         0              
+Registry                                328       normal         4              
+smss.exe                                940       high           2              
+csrss.exe                               1656      high           15             
+wininit.exe                             1864      high           2              
+services.exe                            2000      normal         8              
+LsaIso.exe                              2036      normal         3              
+lsass.exe                               2044      normal         12             
+svchost.exe                             1340      normal         20             
+fontdrvhost.exe                         1648      normal         5              
+svchost.exe                             2148      normal         12             
+WUDFCompanionHost.exe                   2160      high           4              
+svchost.exe                             2424      normal         19             
+svchost.exe                             2432      normal         92             
+svchost.exe                             2444      high           60             
+amdpmfservice.exe                       2464      normal         10             
+svchost.exe                             2480      normal         19             
+svchost.exe                             2488      high           40             
+svchost.exe                             2500      normal         10             
+svchost.exe                             2732      normal         12             
+svchost.exe                             2864      normal         4              
+svchost.exe                             2892      normal         13             
+svchost.exe                             3112      normal         5              
+svchost.exe                             3360      normal         8              
+vmms.exe                                3784      normal         12             
+svchost.exe                             3872      normal         13             
+WUDFHost.exe                            3880      high           5              
+amdfendrsr.exe                          3952      normal         4              
+atiesrxx.exe                            3960      normal         48             
+svchost.exe                             4028      normal         17             
+svchost.exe                             3080      normal         6              
+vmcompute.exe                           4372      normal         2              
+WUDFHost.exe                            4448      normal         5              
+dasHost.exe                             4536      normal         3              
+svchost.exe                             4560      normal         6              
+svchost.exe                             4796      normal         15             
+WUDFCompanionHost.exe                   4860      high           3              
+WUDFCompanionHost.exe                   4948      high           3              
+WmiPrvSE.exe                            5076      normal         6              
+WUDFHost.exe                            4336      normal         7              
+svchost.exe                             4320      normal         6              
+Memory Compression                      4324      normal         70             
+svchost.exe                             5172      normal         8              
+svchost.exe                             5204      normal         8              
+svchost.exe                             5332      normal         4              
+svchost.exe                             5404      normal         16             
+spoolsv.exe                             5468      normal         9              
+WUDFHost.exe                            5504      normal         16             
+svchost.exe                             5872      normal         6              
+WUDFHost.exe                            6048      normal         5              
+AmdPpkgSvc.exe                          6124      normal         2              
+svchost.exe                             4240      normal         9              
+service.exe                             5124      normal         3              
+DAX3API.exe                             5720      normal         477            
+mDNSResponder.exe                       5724      normal         2              
+svchost.exe                             5748      normal         9              
+GlideXNearService.exe                   5764      normal         11             
+Lenovo.Modern.ImController.exe          6148      normal         22             
+GlideXServiceExt.exe                    6164      normal         4              
+LenovoUtilityService.exe                6172      normal         6              
+ElevocControlService.exe                6180      normal         9              
+jtagserver.exe                          6200      normal         4              
+GlideXRemoteService.exe                 6208      normal         5              
+GameInputRedistService.exe              6236      normal         10             
+FoxitPDFReaderUpdateService.exe         6248      normal         3              
+GlideXService.exe                       6276      normal         17             
+RtkAudUService64.exe                    6388      normal         17             
+LNBITSSvc.exe                           6396      normal         9              
+LenovoVantageService.exe                6416      low            18             
+ReadyForService.exe                     6540      normal         3              
+SmartSense.exe                          6584      normal         4              
+UDClientService.exe                     6688      normal         42             
+sqlwriter.exe                           6696      normal         2              
+vmware-authd.exe                        6708      normal         4              
+vmware-usbarbitrator64.exe              6716      normal         3              
+vmnetdhcp.exe                           6728      normal         2              
+vmnat.exe                               6744      normal         4              
+wireguard.exe                           6796      normal         23             
+wslservice.exe                          6864      normal         3              
+svchost.exe                             6888      normal         4              
+NgcIso.exe                              6976      high           1              
+WUDFHost.exe                            6408      normal         5              
+WmiPrvSE.exe                            8768      normal         9              
+unsecapp.exe                            10100     normal         4              
+wlanext.exe                             6672      normal         1              
+svchost.exe                             11068     normal         7              
+svchost.exe                             12208     normal         3              
+svchost.exe                             12272     normal         11             
+MidiSrv.exe                             11576     normal         3              
+WorkloadsSessionManager.exe             15904     normal         2              
+LenovoVantage-(VantageCoreAddin).exe    4460      low            17             
+SecurityHealthService.exe               19820     normal         11             
+svchost.exe                             3316      normal         8              
+Locator.exe                             3264      normal         2              
+WmiApSrv.exe                            20396     normal         2              
+AppProvisioningPlugin.exe               10088     normal         10             
+conhost.exe                             2032      normal         4              
+svchost.exe                             26440     normal         19             
+svchost.exe                             24328     normal         9              
+adb.exe                                 12352     normal         5              
+WorkloadsSessionHost.exe                22620     normal         43             
+spacedeskService.exe                    35220     normal         7              
+WUDFHost.exe                            5440      normal         6              
+svchost.exe                             40936     normal         3              
+logioptionsplus_updater.exe             15136     normal         41             
+FileSyncHelper.exe                      33888     normal         6              
+WaaSMedicAgent.exe                      24640     normal         8              
+conhost.exe                             49040     normal         2              
+gamingservices.exe                      40544     normal         18             
+gamingservicesnet.exe                   37592     normal         39             
+mysqld.exe                              18672     normal         7              
+OfficeClickToRun.exe                    28928     normal         19             
+SearchIndexer.exe                       39316     normal         11             
+svchost.exe                             840       normal         28             
+MpDefenderCoreService.exe               45292     normal         8              
+MsMpEng.exe                             40308     normal         79             
+NisSrv.exe                              48628     normal         5              
+audiodg.exe                             12584     normal         14             
+csrss.exe                               44880     high           18             
+winlogon.exe                            51408     high           3              
+fontdrvhost.exe                         32160     normal         5              
+dwm.exe                                 22728     high           72             
+atieclxx.exe                            23816     normal         16             
+amdpmfserviceuser.exe                   19268     normal         7              
+AutoModeDetect.exe                      14368     normal         12             
+wireguard.exe                           12424     normal         23             
+conhost.exe                             50844     normal         3              
+conhost.exe                             23972     normal         2              
+FnHotkeyCapsLKNumLK.exe                 21848     normal         2              
+dllhost.exe                             12240     normal         7              
+spacedeskServiceTray.exe                23656     normal         3              
+unsecapp.exe                            12448     normal         3              
+FnHotkeyUtility.exe                     22896     normal         14             
+logioptionsplus_agent.exe               38532     normal         131            
+sihost.exe                              48828     normal         13             
+svchost.exe                             7328      normal         2              
+svchost.exe                             14268     normal         12             
+svchost.exe                             25992     normal         4              
+taskhostw.exe                           26784     normal         6              
+unsecapp.exe                            51580     normal         3              
+taskhostw.exe                           49812     normal         4              
+explorer.exe                            20324     normal         236            
+ShellHost.exe                           23308     normal         26             
+CrossDeviceResume.exe                   47356     normal         25             
+PowerToys.exe                           49004     normal         15             
+svchost.exe                             46088     normal         7              
+SearchHost.exe                          20724     normal         32             
+StartMenuExperienceHost.exe             20372     normal         35             
+WidgetBoard.exe                         26500     normal         54             
+RuntimeBroker.exe                       51456     normal         12             
+svchost.exe                             41072     normal         3              
+WidgetService.exe                       8512      normal         7              
+msedgewebview2.exe                      20368     normal         48             
+msedgewebview2.exe                      18496     normal         7              
+msedgewebview2.exe                      27804     high           40             
+msedgewebview2.exe                      16704     normal         29             
+msedgewebview2.exe                      42624     normal         9              
+msedgewebview2.exe                      46856     normal         32             
+backgroundTaskHost.exe                  40424     normal         18             
+MicrosoftStartFeedProvider.exe          43000     normal         10             
+SmartSenseController.exe                27244     normal         3              
+conhost.exe                             52372     normal         3              
+PowerToys.AlwaysOnTop.exe               43820     normal         3              
+PowerToys.Awake.exe                     20204     normal         14             
+ctfmon.exe                              39264     high           12             
+Microsoft.CmdPal.UI.exe                 47544     normal         61             
+PowerToys.ColorPickerUI.exe             40948     normal         15             
+PowerToys.CropAndLock.exe               16012     normal         3              
+WindowsPackageManagerServer.exe         36256     normal         6              
+PowerToys.FancyZones.exe                38436     normal         45             
+PowerToys.KeyboardManagerEngine.exe     22804     high           4              
+PowerToys.Peek.UI.exe                   52720     normal         33             
+TextInputHost.exe                       50300     high           42             
+PowerToys.PowerLauncher.exe             48152     normal         20             
+RuntimeBroker.exe                       31504     normal         3              
+PhoneExperienceHost.exe                 32140     normal         40             
+SecurityHealthSystray.exe               12792     normal         1              
+LockApp.exe                             21884     normal         33             
+RuntimeBroker.exe                       9472      normal         36             
+svchost.exe                             43240     high           27             
+RtkAudUService64.exe                    37576     normal         8              
+svchost.exe                             28916     normal         7              
+logioptionsplus_appbroker.exe           28876     normal         9              
+WUDFHost.exe                            37844     normal         6              
+UserSSCtrl.exe                          11156     normal         3              
+OneDrive.exe                            47672     normal         75             
+OneDrive.exe                            19932     normal         70             
+msedgewebview2.exe                      51872     normal         52             
+msedgewebview2.exe                      36896     normal         7              
+msedgewebview2.exe                      6104      high           42             
+msedgewebview2.exe                      14280     normal         27             
+msedgewebview2.exe                      30388     normal         9              
+msedgewebview2.exe                      4728      normal         15             
+msedgewebview2.exe                      24744     low            32             
+OneDrive.Sync.Service.exe               33744     normal         19             
+ms-teams.exe                            29116     normal         81             
+MathWorksServiceHost.exe                18424     normal         101            
+RuntimeBroker.exe                       38724     normal         2              
+msedgewebview2.exe                      5352      normal         52             
+msedgewebview2.exe                      11396     normal         8              
+msedgewebview2.exe                      32508     high           102            
+msedgewebview2.exe                      504       normal         21             
+msedgewebview2.exe                      25020     normal         10             
+msedgewebview2.exe                      532       normal         37             
+ms-teams.exe                            20640     normal         109            
+MathWorksServiceHost-Monitor.exe        39368     normal         27             
+msedgewebview2.exe                      49848     normal         10             
+Discord.exe                             48548     normal         52             
+Discord.exe                             21196     normal         7              
+Discord.exe                             33524     high           159            
+Discord.exe                             13840     normal         20             
+Discord.exe                             2172      normal         96             
+Discord.exe                             15908     normal         7              
+AMDRSServ.exe                           43108     normal         11             
+AMDRSSrcExt.exe                         41132     normal         30             
+amdow.exe                               3744      normal         24             
+WhatsApp.Root.exe                       30012     low            72             
+RuntimeBroker.exe                       47840     normal         2              
+msedgewebview2.exe                      22760     normal         47             
+msedgewebview2.exe                      36220     normal         7              
+msedgewebview2.exe                      684       high           18             
+msedgewebview2.exe                      20232     normal         23             
+msedgewebview2.exe                      47344     normal         9              
+msedgewebview2.exe                      41760     low            39             
+AppleMobileDeviceProcess.exe            18804     normal         9              
+ONENOTEM.EXE                            30128     normal         2              
+acrotray.exe                            15232     normal         1              
+jusched.exe                             868       normal         3              
+firefox.exe                             10256     normal         78             
+crashhelper.exe                         16308     normal         2              
+firefox.exe                             38652     high           86             
+firefox.exe                             32728     normal         6              
+firefox.exe                             46384     low            27             
+firefox.exe                             18448     normal         26             
+firefox.exe                             38084     normal         27             
+firefox.exe                             46896     normal         5              
+olk.exe                                 6272      normal         36             
+msedgewebview2.exe                      51868     normal         49             
+msedgewebview2.exe                      2328      normal         7              
+msedgewebview2.exe                      17760     high           41             
+msedgewebview2.exe                      49764     normal         21             
+msedgewebview2.exe                      18936     normal         10             
+msedgewebview2.exe                      48324     normal         33             
+msedgewebview2.exe                      20360     normal         37             
+RuntimeBroker.exe                       12408     normal         3              
+olkexthost.exe                          21776     normal         5              
+RuntimeBroker.exe                       41172     normal         3              
+LenovoVantage-(GenericMessagingAddin).exe2092      low            14             
+backgroundTaskHost.exe                  17196     normal         6              
+RuntimeBroker.exe                       28812     normal         2              
+FileCoAuth.exe                          8636      normal         7              
+firefox.exe                             16544     low            27             
+AppActions.exe                          50092     normal         7              
+jucheck.exe                             15084     normal         4              
+SystemSettings.exe                      33732     normal         63             
+ApplicationFrameHost.exe                17064     normal         24             
+svchost.exe                             33352     normal         3              
+UserOOBEBroker.exe                      36856     normal         1              
+GitHubDesktop.exe                       50700     normal         40             
+GitHubDesktop.exe                       42864     high           38             
+GitHubDesktop.exe                       6884      normal         21             
+GitHubDesktop.exe                       28192     low            38             
+firefox.exe                             25520     normal         5              
+firefox.exe                             49336     low            29             
+firefox.exe                             28304     low            28             
+firefox.exe                             22784     normal         5              
+RuntimeBroker.exe                       31256     normal         2              
+firefox.exe                             3320      low            29             
+Spotify.exe                             11308     normal         84             
+Spotify.exe                             42372     normal         6              
+Spotify.exe                             52764     high           101            
+Spotify.exe                             44384     normal         30             
+Spotify.exe                             672       normal         11             
+backgroundTaskHost.exe                  11400     normal         4              
+RuntimeBroker.exe                       46016     normal         2              
+Spotify.exe                             776       low            35             
+Spotify.exe                             15676     normal         10             
+firefox.exe                             3188      normal         28             
+firefox.exe                             24732     normal         26             
+firefox.exe                             12828     normal         26             
+svchost.exe                             44140     normal         4              
+vctip.exe                               45384     normal         21             
+Visual Paradigm.exe                     22324     normal         50             
+devenv.exe                              22612     normal         125            
+PerfWatson2.exe                         45848     normal         16             
+StandardCollector.Service.exe           35044     normal         24             
+Microsoft.ServiceHub.Controller.exe     7568      normal         18             
+ServiceHub.VSDetouredHost.exe           41964     normal         21             
+ServiceHub.ThreadedWaitDialog.exe       43800     normal         15             
+ServiceHub.IdentityHost.exe             43700     normal         26             
+vshost.exe                              33228     normal         1              
+ServiceHub.IntellicodeModelService.exe  11392     normal         8              
+ServiceHub.IndexingService.exe          15020     normal         19             
+ServiceHub.Host.dotnet.x64.exe          18704     normal         24             
+copilot-language-server.exe             49436     normal         15             
+conhost.exe                             49916     normal         2              
+ServiceHub.TestWindowStoreHost.exe      52712     normal         15             
+svchost.exe                             53752     normal         6              
+MSBuild.exe                             10684     normal         15             
+conhost.exe                             48240     normal         2              
+ServiceHub.DataWarehouseHost.exe        3972      normal         22             
+firefox.exe                             16956     normal         31             
+ServiceHub.Host.dotnet.x64.exe          51792     normal         26             
+OpenConsole.exe                         39152     normal         5              
+powershell.exe                          39272     normal         13             
+vcpkgsrv.exe                            29084     normal         6              
+vcpkgsrv.exe                            45708     normal         9              
+VsDebugConsole.exe                      46460     normal         5              
+conhost.exe                             32932     normal         6              
+OpenConsole.exe                         18056     normal         11             
+WindowsTerminal.exe                     5832      normal         56             
+AdminTool.exe                           37356     normal         7              
+msvsmon.exe                             30864     normal         12             
+msedgewebview2.exe                      31220     normal         63             
+msedgewebview2.exe                      32776     normal         10             
+msedgewebview2.exe                      51504     high           38             
+msedgewebview2.exe                      44356     normal         28             
+msedgewebview2.exe                      51032     normal         9              
+msedgewebview2.exe                      44820     normal         19             
+msedgewebview2.exe                      53300     normal         18             
+vcpkgsrv.exe                            53272     normal         10             
+--------------------------
+Test Exception in TestCase
+[Test OK] Result: (Expected: true == Result: true)
+
+Test Exception Error Bad Ost
+[Test OK] Result: (Expected: 0 == Result: 0)
+
+Test Cmd Identifier
+[Test OK] Result: (Expected: lss == Result: lss)
+
+--------------------------
+Executing ListSysInfo Command...
+System Information <HARDWARE>:
+------------------------------
+Processor Type : 8664
+Architecture : x64 (AMD or Intel)
+Processor Level (Family) : unknown
+Revision : unknown
+Number of (logical) Processors : 20
+Features:
+Physical Address Extension supported.
+Virtualization enabled.
+
+System Information <SOFTWARE>:
+------------------------------
+Computer Name: SIMONS-LAPTOP
+OS Version : Windows 8 or greater
+Server : No Server Version
+--------------------------
+Test Exception in TestCase
+[Test OK] Result: (Expected: true == Result: true)
+
+Test Exception Error Bad Ost
+[Test OK] Result: (Expected: 0 == Result: 0)
+
+Test Cmd Identifier
+[Test OK] Result: (Expected: exec == Result: exec)
+
+--------------------------
+Executing OpenApp Command (mspaint)...
+--------------------------
+OpenApp started a new mspaint process
+[Test OK] Result: (Expected: true == Result: true)
+
+TerminateApp closed mspaint
+[Test OK] Result: (Expected: false == Result: false)
+
+Test Exception in TestCase
+[Test OK] Result: (Expected: true == Result: true)
+
+Test Exception for empty command
+[Test OK] Result: (Expected: false == Result: false)
+
+Test Exception for invalid app
+[Test OK] Result: (Expected: false == Result: false)
+
+Test Cmd Identifier
+[Test OK] Result: (Expected: term == Result: term)
+
+Test Exception in TestCase
+[Test OK] Result: (Expected: true == Result: true)
+
+TerminateApp setup: mspaint started
+[Test OK] Result: (Expected: true == Result: true)
+
+TerminateApp terminated mspaint
+[Test OK] Result: (Expected: false == Result: false)
+
+Test Exception in terminate flow
+[Test OK] Result: (Expected: true == Result: true)
+
+TerminateApp throws for invalid PID
+[Test OK] Result: (Expected: false == Result: false)
+
+TerminateApp throws for non-numeric PID
+[Test OK] Result: (Expected: false == Result: false)
+
+Menu::ShowMenu contains command identifier
+[Test OK] Result: (Expected: true == Result: true)
+
+Menu::ShowMenu contains usage text
+[Test OK] Result: (Expected: true == Result: true)
+
+Menu::ExecuteCommand calls Execute
+[Test OK] Result: (Expected: true == Result: true)
+
+Menu::ExecuteCommand passes arguments
+[Test OK] Result: (Expected: arg1 arg2 == Result: arg1 arg2)
+
+Menu::ExecuteCommand ignores unknown commands
+[Test OK] Result: (Expected: false == Result: false)
+
+Test Exception in TestCase
+[Test OK] Result: (Expected: true == Result: true)
+
+Menu::ShowMenu throws on bad ostream
+[Test OK] Result: (Expected: 0 == Result: 0)
+
+TEST OK!!

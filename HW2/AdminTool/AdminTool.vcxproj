@@ -136,6 +136,7 @@
     <ClInclude Include="Object.hpp" />
     <ClInclude Include="OpenApp.hpp" />
     <ClInclude Include="TerminateApp.hpp" />
+    <ClInclude Include="Test.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Hlp.cpp" />

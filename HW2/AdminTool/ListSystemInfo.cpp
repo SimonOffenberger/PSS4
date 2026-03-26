@@ -1,6 +1,11 @@
 
+/**
+ * @file ListSystemInfo.cpp
+ * @brief Implementation of the ListSystemInfo command.
+ */
 #include "ListSystemInfo.hpp"
 #include <windows.h>
+#include <VersionHelpers.h>
 #include <iostream>
 #include <iomanip>
 #include <string>
@@ -22,48 +27,22 @@ static const char* GetArchitectureString(WORD arch)
     }
 }
 
-static bool IsWindowsVersionOrGreater(WORD major, WORD minor)
-{
-    OSVERSIONINFOEXA osvi{};
-    osvi.dwOSVersionInfoSize = sizeof(osvi);
-    osvi.dwMajorVersion = major;
-    osvi.dwMinorVersion = minor;
-
-    DWORDLONG mask = 0;
-    VER_SET_CONDITION(mask, VER_MAJORVERSION, VER_GREATER_EQUAL);
-    VER_SET_CONDITION(mask, VER_MINORVERSION, VER_GREATER_EQUAL);
-
-    return VerifyVersionInfoA(&osvi, VER_MAJORVERSION | VER_MINORVERSION, mask) != FALSE;
-}
-
 static std::string GetOSVersionString()
 {
-    if (IsWindowsVersionOrGreater(10, 0))
+    if (IsWindows10OrGreater())
         return "Windows 10 or greater";
-    if (IsWindowsVersionOrGreater(6, 3))
+    if (IsWindows8Point1OrGreater())
         return "Windows 8.1 or greater";
-    if (IsWindowsVersionOrGreater(6, 2))
+    if (IsWindows8OrGreater())
         return "Windows 8 or greater";
-    if (IsWindowsVersionOrGreater(6, 1))
+    if (IsWindows7OrGreater())
         return "Windows 7 or greater";
 
     return "Older than Windows 7";
 }
 
-static bool IsServerOS()
-{
-    OSVERSIONINFOEXA osvi{};
-    osvi.dwOSVersionInfoSize = sizeof(osvi);
 
-    DWORDLONG mask = 0;
-    VER_SET_CONDITION(mask, VER_PRODUCT_TYPE, VER_EQUAL);
-
-    osvi.wProductType = VER_NT_WORKSTATION;
-
-    return VerifyVersionInfoA(&osvi, VER_PRODUCT_TYPE, mask) == FALSE;
-}
-
-void ListSystemInfo::Execute()
+void ListSystemInfo::Execute(const std::string& cmdArg)
 {
 	PrintHardwareInfo();
 	PrintSoftwareInfo();
@@ -71,6 +50,11 @@ void ListSystemInfo::Execute()
 
 void ListSystemInfo::PrintHardwareInfo()
 {
+    if(mOst.bad())
+    {
+        throw std::runtime_error(ERROR_BAD_OSTREAM);
+	}
+
     SYSTEM_INFO si{};
     GetSystemInfo(&si);
 
@@ -110,6 +94,11 @@ void ListSystemInfo::PrintHardwareInfo()
 
 void ListSystemInfo::PrintSoftwareInfo()
 {
+    if (mOst.bad())
+    {
+        throw std::runtime_error(ERROR_BAD_OSTREAM);
+    }
+
     char computerName[MAX_COMPUTERNAME_LENGTH + 1]{};
     DWORD size = MAX_COMPUTERNAME_LENGTH + 1;
 
@@ -117,24 +106,24 @@ void ListSystemInfo::PrintSoftwareInfo()
     {
         lstrcpyA(computerName, "unknown");
     }
-
+    mOst << std::endl;
     mOst << "System Information <SOFTWARE>:\n";
     mOst << "------------------------------\n";
     mOst << "Computer Name: " << computerName << "\n";
     mOst << "OS Version : " << GetOSVersionString() << "\n";
-    mOst << "Server : " << (IsServerOS() ? "Server Version" : "No Server Version") << "\n";
+    mOst << "Server : " << (IsWindowsServer() ? "Server Version" : "No Server Version") << "\n";
 }
 
 
 
 std::string ListSystemInfo::GetCmdName() const
 {
-	return ListSystemInfo::CMD_IDENTIFIER + " -> List System Information";
+	return std::string(ListSystemInfo::CMD_IDENTIFIER) + " -> List System Information (Usage: lss)";
 }
 
 std::string ListSystemInfo::GetCmdIdentifier() const
 {
-    return ListSystemInfo::CMD_IDENTIFIER;
+	return ListSystemInfo::CMD_IDENTIFIER;
 }
 
 

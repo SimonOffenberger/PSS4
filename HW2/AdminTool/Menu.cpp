@@ -1,6 +1,12 @@
 #include "Menu.hpp"
+/**
+ * @file Menu.cpp
+ * @brief Implementation of the Menu class.
+ */
+#include "Menu.hpp"
 #include <cassert>
 #include <algorithm>
+#include <sstream>
 
 static std::ostream & hline(std::ostream & os)
 {	
@@ -36,16 +42,38 @@ void Menu::ShowMenu(std::ostream& ost)
 
 void Menu::ExecuteCommand(const std::string & cmd)
 {
+
+	std::stringstream converter;
+
+	converter << cmd;
+
+	std::string cmdIdentifier;
+	// extract the first word of the command as identifier
+	converter >> cmdIdentifier;
+
 	const auto & find = std::find_if(mCommands.cbegin(), mCommands.cend(), [&](const Command::UPTR & com) {
-		return com->GetCmdIdentifier() == cmd;
+		return com->GetCmdIdentifier() == cmdIdentifier;
 	});
 
-	if(find != mCommands.cend())
-	{
-		(*find)->Execute();
+	try {
+
+		if (find != mCommands.cend())
+		{
+			std::string cmdArg;
+			// extract the rest of the command as argument
+			std::getline(converter >> std::ws, cmdArg); // read the rest of the line without leading whitespace
+			(*find)->Execute(cmdArg);
+		}
+		else
+		{
+			std::cerr << "Unknown Command: " << cmd << std::endl;
+		}
 	}
-	else
+	catch (const std::exception & ex)
 	{
-		std::cerr << "Unknown Command: " << cmd << std::endl;
+		std::cerr << "Error executing command: " << ex.what() << std::endl;
+	}
+	catch (...) {
+		std::cerr << "Unknown error executing command: " << cmd << std::endl;
 	}
 }
